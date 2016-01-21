@@ -20,7 +20,10 @@
 package org.sonarsource.auth.bitbucket;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
+import com.github.scribejava.core.extractors.AccessTokenExtractor;
+import com.github.scribejava.core.extractors.JsonTokenExtractor;
 import com.github.scribejava.core.model.OAuthConfig;
+import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.utils.OAuthEncoder;
 
 import static java.lang.String.format;
@@ -33,6 +36,12 @@ public class BitbucketScribeApi extends DefaultApi20 {
     return TOKEN_URL;
   }
 
+  @Override
+  public Verb getAccessTokenVerb() {
+    return Verb.POST;
+  }
+
+  @Override
   public String getAuthorizationUrl(OAuthConfig config) {
     StringBuilder sb = new StringBuilder(format("https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s", config.getApiKey(),
       OAuthEncoder.encode(config.getCallback())));
@@ -40,5 +49,10 @@ public class BitbucketScribeApi extends DefaultApi20 {
       sb.append('&').append("scope").append('=').append(OAuthEncoder.encode(config.getScope()));
     }
     return sb.toString();
+  }
+
+  @Override
+  public AccessTokenExtractor getAccessTokenExtractor() {
+    return new JsonTokenExtractor();
   }
 }

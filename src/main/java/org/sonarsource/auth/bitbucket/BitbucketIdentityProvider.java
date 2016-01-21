@@ -32,9 +32,14 @@ import org.sonar.api.server.ServerSide;
 import org.sonar.api.server.authentication.OAuth2IdentityProvider;
 import org.sonar.api.server.authentication.UserIdentity;
 
+/**
+ * TODO add debug logs
+ * TODO document that scope "Account Read" is required (it includes scope "Account Email")
+ */
 @ServerSide
 public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
+  public static final String REQUIRED_SCOPE = "account";
   private static final Token EMPTY_TOKEN = null;
 
   private final BitbucketSettings settings;
@@ -72,7 +77,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
   @Override
   public void init(InitContext context) {
     OAuthService scribe = prepareScribe(context)
-      .scope("email")
+      .scope(REQUIRED_SCOPE)
       .build();
     String url = scribe.getAuthorizationUrl(EMPTY_TOKEN);
     context.redirectTo(url);
@@ -101,7 +106,8 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response userResponse = userRequest.send();
-    // TODO test if successful
+    // TODO test if successful and if information is available. Callback can be called even if the request scope
+    // was not accepted by user
     return GsonUser.parse(userResponse.getBody());
   }
 
@@ -110,7 +116,8 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user/emails", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response emailsResponse = userRequest.send();
-    // TODO test if successful
+    // TODO test if successful and if information is available. Callback can be called even if the request scope
+    // was not accepted by user
     return GsonEmails.extractPrimaryEmail(emailsResponse.getBody());
   }
 
@@ -122,6 +129,8 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
       .provider(BitbucketScribeApi.class)
       .apiKey(settings.clientId())
       .apiSecret(settings.clientSecret())
+      .grantType("authorization_code")
       .callback(context.getCallbackUrl());
   }
+
 }
