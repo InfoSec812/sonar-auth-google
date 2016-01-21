@@ -116,9 +116,10 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user/emails", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response emailsResponse = userRequest.send();
-    // TODO test if successful and if information is available. Callback can be called even if the request scope
-    // was not accepted by user
-    return GsonEmails.extractPrimaryEmail(emailsResponse.getBody());
+    if (emailsResponse.isSuccessful()) {
+      return GsonEmails.extractPrimaryEmail(emailsResponse.getBody());
+    }
+    return null;
   }
 
   private ServiceBuilder prepareScribe(OAuth2IdentityProvider.OAuth2Context context) {
