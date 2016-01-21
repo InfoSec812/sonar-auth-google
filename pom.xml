@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.sonarsource.parent</groupId>
+    <artifactId>parent</artifactId>
+    <version>26</version>
+  </parent>
+
+  <groupId>org.sonarsource.auth.bitbucket</groupId>
+  <artifactId>sonar-auth-bitbucket-plugin</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>sonar-plugin</packaging>
+  <name>Bitbucket Authentication for SonarQube</name>
+  <inceptionYear>2016</inceptionYear>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.pluginClass>org.sonarsource.auth.bitbucket.AuthBitbucketPlugin</sonar.pluginClass>
+  </properties>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>https://jira.sonarsource.com/projects/SQAUTHBITB</url>
+  </issueManagement>
+
+  <scm>
+    <connection>scm:git:git@github.com:SonarSource/sonar-auth-bitbucket.git</connection>
+    <developerConnection>scm:git:git@github.com:SonarSource/sonar-auth-bitbucket.git</developerConnection>
+    <url>https://github.com/SonarSource/sonar-auth-bitbucket</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>julienlancelot</id>
+      <name>Julien Lancelot</name>
+      <organization>SonarSource</organization>
+    </developer>
+  </developers>
+
+  <organization>
+    <name>SonarSource</name>
+    <url>http://sonarsource.com</url>
+  </organization>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.sonarsource.sonarqube</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>5.4-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.scribejava</groupId>
+      <artifactId>scribejava-apis</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>2.2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
