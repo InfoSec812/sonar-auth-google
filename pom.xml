@@ -18,6 +18,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sonar.pluginClass>org.sonarsource.auth.bitbucket.AuthBitbucketPlugin</sonar.pluginClass>
+
+    <!-- used for deployment to SonarSource Artifactory -->
+    <gitRepositoryName>sonar-auth-bitbucketFix </gitRepositoryName>
   </properties>
 
   <issueManagement>
