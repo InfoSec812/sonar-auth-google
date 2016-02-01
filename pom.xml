@@ -49,7 +49,7 @@
     <dependency>
       <groupId>org.sonarsource.sonarqube</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>5.4-SNAPSHOT</version>
+      <version>5.4-build7650</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

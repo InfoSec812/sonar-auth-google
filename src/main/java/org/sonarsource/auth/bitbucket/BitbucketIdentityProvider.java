@@ -94,7 +94,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     String primaryEmail = requestPrimaryEmail(scribe, accessToken);
 
     UserIdentity userIdentity = UserIdentity.builder()
-      .setId(gsonUser.getUsername())
+      .setProviderLogin(gsonUser.getUsername())
       .setName(gsonUser.getDisplayName())
       .setEmail(primaryEmail)
       .build();
