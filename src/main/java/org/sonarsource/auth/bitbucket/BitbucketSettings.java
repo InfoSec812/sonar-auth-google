@@ -44,7 +44,7 @@ public class BitbucketSettings {
   public static final String LOGIN_STRATEGY_DEFAULT_VALUE = LOGIN_STRATEGY_UNIQUE;
 
   public static final String CATEGORY = "security";
-  public static final String SUBCATEGORY = "Bitbucket";
+  public static final String SUBCATEGORY = "bitbucket";
 
   private final Settings settings;
 
