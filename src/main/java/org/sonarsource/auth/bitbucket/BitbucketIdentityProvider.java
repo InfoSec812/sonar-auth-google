@@ -29,15 +29,21 @@ import com.github.scribejava.core.oauth.OAuthService;
 import javax.annotation.CheckForNull;
 import javax.servlet.http.HttpServletRequest;
 import org.sonar.api.server.ServerSide;
+import org.sonar.api.server.authentication.Display;
 import org.sonar.api.server.authentication.OAuth2IdentityProvider;
 import org.sonar.api.server.authentication.UserIdentity;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 
-/**
- * TODO add debug logs
- * TODO document that scope "Account Read" is required (it includes scope "Account Email")
- */
+import static java.lang.String.format;
+import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
+import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_PROVIDER_LOGIN;
+import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_UNIQUE;
+
 @ServerSide
 public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
+
+  private static final Logger LOGGER = Loggers.get(BitbucketIdentityProvider.class);
 
   public static final String REQUIRED_SCOPE = "account";
   private static final Token EMPTY_TOKEN = null;
@@ -59,9 +65,12 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
   }
 
   @Override
-  public String getIconPath() {
-    // URL of src/main/resources/static/bitbucket.svg at runtime
-    return "/static/authbitbucket/bitbucket.svg";
+  public Display getDisplay() {
+    return Display.builder()
+      // URL of src/main/resources/static/bitbucket.svg at runtime
+      .setIconPath("/static/authbitbucket/bitbucket.svg")
+      .setBackgroundColor("#205081")
+      .build();
   }
 
   @Override
@@ -95,6 +104,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
     UserIdentity userIdentity = UserIdentity.builder()
       .setProviderLogin(gsonUser.getUsername())
+      .setLogin(getLogin(gsonUser))
       .setName(gsonUser.getDisplayName())
       .setEmail(primaryEmail)
       .build();
@@ -106,9 +116,13 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response userResponse = userRequest.send();
+
+    String userResponseBody = userResponse.getBody();
+    LOGGER.trace("User response received : %s", userResponseBody);
+
     // TODO test if successful and if information is available. Callback can be called even if the request scope
     // was not accepted by user
-    return GsonUser.parse(userResponse.getBody());
+    return GsonUser.parse(userResponseBody);
   }
 
   @CheckForNull
@@ -132,6 +146,21 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
       .apiSecret(settings.clientSecret())
       .grantType("authorization_code")
       .callback(context.getCallbackUrl());
+  }
+
+  private String getLogin(GsonUser gsonUser) {
+    String loginStrategy = settings.loginStrategy();
+    if (LOGIN_STRATEGY_UNIQUE.equals(loginStrategy)) {
+      return generateUniqueLogin(gsonUser);
+    } else if (LOGIN_STRATEGY_PROVIDER_LOGIN.equals(loginStrategy)) {
+      return gsonUser.getUsername();
+    } else {
+      throw new IllegalStateException(format("Login strategy not found : %s", loginStrategy));
+    }
+  }
+
+  private String generateUniqueLogin(GsonUser gsonUser) {
+    return sha256Hex(getKey() + ":" + gsonUser.getUsername());
   }
 
 }

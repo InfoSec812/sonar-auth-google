@@ -27,13 +27,22 @@ import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.config.Settings;
 import org.sonar.api.server.ServerSide;
 
+import static java.lang.String.format;
+import static org.sonar.api.PropertyType.SINGLE_SELECT_LIST;
+
 @ServerSide
 public class BitbucketSettings {
 
-  public static final String CLIENT_ID = "sonar.auth.bitbucket.clientId";
-  public static final String CLIENT_SECRET = "sonar.auth.bitbucket.clientSecret";
+  public static final String CONSUMER_KEY = "sonar.auth.bitbucket.clientId";
+  public static final String CONSUMER_SECRET = "sonar.auth.bitbucket.clientSecret";
   public static final String ENABLED = "sonar.auth.bitbucket.enabled";
   public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.bitbucket.allowUsersToSignUp";
+
+  public static final String LOGIN_STRATEGY = "sonar.auth.bitbucket.loginStrategy";
+  public static final String LOGIN_STRATEGY_UNIQUE = "Unique";
+  public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Bitbucket login";
+  public static final String LOGIN_STRATEGY_DEFAULT_VALUE = LOGIN_STRATEGY_UNIQUE;
+
   public static final String CATEGORY = "security";
   public static final String SUBCATEGORY = "Bitbucket";
 
@@ -45,12 +54,12 @@ public class BitbucketSettings {
 
   @CheckForNull
   public String clientId() {
-    return settings.getString(CLIENT_ID);
+    return settings.getString(CONSUMER_KEY);
   }
 
   @CheckForNull
   public String clientSecret() {
-    return settings.getString(CLIENT_SECRET);
+    return settings.getString(CONSUMER_SECRET);
   }
 
   public boolean isEnabled() {
@@ -61,8 +70,11 @@ public class BitbucketSettings {
     return settings.getBoolean(ALLOW_USERS_TO_SIGN_UP);
   }
 
+  public String loginStrategy(){
+    return settings.getString(LOGIN_STRATEGY);
+  }
+
   public static List<PropertyDefinition> definitions() {
-    int index = 1;
     return Arrays.asList(
       PropertyDefinition.builder(ENABLED)
         .name("Enabled")
@@ -71,30 +83,42 @@ public class BitbucketSettings {
         .subCategory(SUBCATEGORY)
         .type(PropertyType.BOOLEAN)
         .defaultValue(String.valueOf(false))
-        .index(index++)
+        .index(1)
         .build(),
-      PropertyDefinition.builder(CLIENT_ID)
-        .name("Client ID")
-        .description("TODO")
+      PropertyDefinition.builder(CONSUMER_KEY)
+        .name("OAuth consumer Key")
+        .description("Consumer Key provided by Bitbucket when registering the consumer.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
-        .index(index++)
+        .index(2)
         .build(),
-      PropertyDefinition.builder(CLIENT_SECRET)
-        .name("Client Secret")
-        .description("TODO")
+      PropertyDefinition.builder(CONSUMER_SECRET)
+        .name("OAuth consumer Secret")
+        .description("Consumer Secret provided by Bitbucket when registering the consumer.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
-        .index(index++)
+        .index(3)
         .build(),
       PropertyDefinition.builder(ALLOW_USERS_TO_SIGN_UP)
         .name("Allow users to sign-up")
-        .description("TODO")
+        .description("Allow new users to authenticate. When set to 'false', only existing users will be able to authenticate to the server.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .type(PropertyType.BOOLEAN)
         .defaultValue(String.valueOf(true))
-        .index(index++)
+        .index(4)
+        .build(),
+      PropertyDefinition.builder(LOGIN_STRATEGY)
+        .name("Login generation strategy")
+        .description(format("When the login strategy is set to '%s', the user's login will be auto-generated the first time so that it is unique. " +
+            "When the login strategy is set to '%s', the user's login will be the Bitbucket login.",
+          LOGIN_STRATEGY_UNIQUE, LOGIN_STRATEGY_PROVIDER_LOGIN))
+        .category(CATEGORY)
+        .subCategory(SUBCATEGORY)
+        .type(SINGLE_SELECT_LIST)
+        .defaultValue(LOGIN_STRATEGY_DEFAULT_VALUE)
+        .options(LOGIN_STRATEGY_UNIQUE, LOGIN_STRATEGY_PROVIDER_LOGIN)
+        .index(5)
         .build()
       );
   }
