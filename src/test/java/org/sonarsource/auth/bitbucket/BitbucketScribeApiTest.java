@@ -46,6 +46,11 @@ public class BitbucketScribeApiTest {
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
       "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback&scope=scope"
     );
+
+    oAuthConfig = new OAuthConfig("key", null, "callback", null, null, null, null, null, null);
+    assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
+      "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback"
+    );
   }
 
   @Test
