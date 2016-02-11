@@ -112,7 +112,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     context.redirectToRequestedPage();
   }
 
-  private GsonUser requestUser(OAuthService scribe, Token accessToken) {
+  private static GsonUser requestUser(OAuthService scribe, Token accessToken) {
     OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response userResponse = userRequest.send();
@@ -126,7 +126,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
   }
 
   @CheckForNull
-  private String requestPrimaryEmail(OAuthService scribe, Token accessToken) {
+  private static String requestPrimaryEmail(OAuthService scribe, Token accessToken) {
     OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user/emails", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response emailsResponse = userRequest.send();

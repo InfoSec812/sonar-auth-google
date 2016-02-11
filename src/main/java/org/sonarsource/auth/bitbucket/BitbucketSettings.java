@@ -63,7 +63,7 @@ public class BitbucketSettings {
   }
 
   public boolean isEnabled() {
-    return settings.getBoolean(ENABLED) && clientId() != null && clientSecret() != null;
+    return settings.getBoolean(ENABLED) && clientId() != null && clientSecret() != null && loginStrategy() != null;
   }
 
   public boolean allowUsersToSignUp() {

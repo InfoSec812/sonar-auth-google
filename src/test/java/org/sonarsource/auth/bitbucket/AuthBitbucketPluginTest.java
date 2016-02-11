@@ -19,39 +19,17 @@
  */
 package org.sonarsource.auth.bitbucket;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
+import org.junit.Test;
 
-/**
- * Lite representation of JSON response of GET https://api.bitbucket.org/2.0/user
- */
-public class GsonUser {
-  @SerializedName("username")
-  private String username;
+import static org.assertj.core.api.Assertions.assertThat;
 
-  @SerializedName("display_name")
-  private String displayName;
+public class AuthBitbucketPluginTest {
 
-  public GsonUser setUsername(String username) {
-    this.username = username;
-    return this;
+  AuthBitbucketPlugin underTest = new AuthBitbucketPlugin();
+
+  @Test
+  public void test_extensions() throws Exception {
+    assertThat(underTest.getExtensions()).hasSize(7);
   }
 
-  public GsonUser setDisplayName(String displayName) {
-    this.displayName = displayName;
-    return this;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public String getDisplayName() {
-    return displayName;
-  }
-
-  public static GsonUser parse(String json) {
-    Gson gson = new Gson();
-    return gson.fromJson(json, GsonUser.class);
-  }
 }
