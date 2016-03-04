@@ -36,7 +36,6 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
 import static java.lang.String.format;
-import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_PROVIDER_LOGIN;
 import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_UNIQUE;
 
@@ -160,7 +159,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
   }
 
   private String generateUniqueLogin(GsonUser gsonUser) {
-    return sha256Hex(getKey() + ":" + gsonUser.getUsername());
+    return getKey() + "@" + gsonUser.getUsername();
   }
 
 }
