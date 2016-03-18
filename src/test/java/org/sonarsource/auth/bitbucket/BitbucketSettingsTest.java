@@ -34,8 +34,8 @@ public class BitbucketSettingsTest {
 
   @Test
   public void is_enabled() throws Exception {
-    settings.setProperty("sonar.auth.bitbucket.clientId", "id");
-    settings.setProperty("sonar.auth.bitbucket.clientSecret", "secret");
+    settings.setProperty("sonar.auth.bitbucket.clientId.secured", "id");
+    settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", "secret");
     settings.setProperty("sonar.auth.bitbucket.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
 
     settings.setProperty("sonar.auth.bitbucket.enabled", true);
@@ -48,8 +48,8 @@ public class BitbucketSettingsTest {
   @Test
   public void is_enabled_always_return_false_when_client_id_is_null() throws Exception {
     settings.setProperty("sonar.auth.bitbucket.enabled", true);
-    settings.setProperty("sonar.auth.bitbucket.clientId", (String) null);
-    settings.setProperty("sonar.auth.bitbucket.clientSecret", "secret");
+    settings.setProperty("sonar.auth.bitbucket.clientId.secured", (String) null);
+    settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", "secret");
     settings.setProperty("sonar.auth.bitbucket.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
 
     assertThat(underTest.isEnabled()).isFalse();
@@ -58,8 +58,8 @@ public class BitbucketSettingsTest {
   @Test
   public void is_enabled_always_return_false_when_client_secret_is_null() throws Exception {
     settings.setProperty("sonar.auth.bitbucket.enabled", true);
-    settings.setProperty("sonar.auth.bitbucket.clientId", "id");
-    settings.setProperty("sonar.auth.bitbucket.clientSecret", (String) null);
+    settings.setProperty("sonar.auth.bitbucket.clientId.secured", "id");
+    settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", (String) null);
     settings.setProperty("sonar.auth.bitbucket.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
 
     assertThat(underTest.isEnabled()).isFalse();
@@ -68,8 +68,8 @@ public class BitbucketSettingsTest {
   @Test
   public void is_enabled_always_return_false_when_login_strategy_is_null() throws Exception {
     settings.setProperty("sonar.auth.bitbucket.enabled", true);
-    settings.setProperty("sonar.auth.bitbucket.clientId", "id");
-    settings.setProperty("sonar.auth.bitbucket.clientSecret", "secret");
+    settings.setProperty("sonar.auth.bitbucket.clientId.secured", "id");
+    settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", "secret");
     settings.setProperty("sonar.auth.bitbucket.loginStrategy", (String) null);
 
     assertThat(underTest.isEnabled()).isFalse();
@@ -77,13 +77,13 @@ public class BitbucketSettingsTest {
 
   @Test
   public void return_client_id() throws Exception {
-    settings.setProperty("sonar.auth.bitbucket.clientId", "id");
+    settings.setProperty("sonar.auth.bitbucket.clientId.secured", "id");
     assertThat(underTest.clientId()).isEqualTo("id");
   }
 
   @Test
   public void return_client_secret() throws Exception {
-    settings.setProperty("sonar.auth.bitbucket.clientSecret", "secret");
+    settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", "secret");
     assertThat(underTest.clientSecret()).isEqualTo("secret");
   }
 

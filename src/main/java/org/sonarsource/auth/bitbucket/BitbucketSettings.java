@@ -33,8 +33,8 @@ import static org.sonar.api.PropertyType.SINGLE_SELECT_LIST;
 @ServerSide
 public class BitbucketSettings {
 
-  public static final String CONSUMER_KEY = "sonar.auth.bitbucket.clientId";
-  public static final String CONSUMER_SECRET = "sonar.auth.bitbucket.clientSecret";
+  public static final String CONSUMER_KEY = "sonar.auth.bitbucket.clientId.secured";
+  public static final String CONSUMER_SECRET = "sonar.auth.bitbucket.clientSecret.secured";
   public static final String ENABLED = "sonar.auth.bitbucket.enabled";
   public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.bitbucket.allowUsersToSignUp";
 
