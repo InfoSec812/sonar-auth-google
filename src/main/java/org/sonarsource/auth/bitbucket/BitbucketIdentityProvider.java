@@ -159,7 +159,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
   }
 
   private String generateUniqueLogin(GsonUser gsonUser) {
-    return getKey() + "@" + gsonUser.getUsername();
+    return gsonUser.getUsername() + "@" + getKey();
   }
 
 }
