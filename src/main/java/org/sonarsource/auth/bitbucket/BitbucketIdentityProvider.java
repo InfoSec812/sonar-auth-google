@@ -87,7 +87,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
   @Override
   public void init(InitContext context) {
-    OAuthService scribe = prepareScribe(context)
+    OAuthService scribe = newScribeBuilder(context)
       .scope(REQUIRED_SCOPE)
       .build();
     String url = scribe.getAuthorizationUrl(EMPTY_TOKEN);
@@ -97,7 +97,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
   @Override
   public void callback(CallbackContext context) {
     HttpServletRequest request = context.getRequest();
-    OAuthService scribe = prepareScribe(context).build();
+    OAuthService scribe = newScribeBuilder(context).build();
     String oAuthVerifier = request.getParameter("code");
     Token accessToken = scribe.getAccessToken(EMPTY_TOKEN, new Verifier(oAuthVerifier));
 
@@ -133,7 +133,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     return null;
   }
 
-  private ServiceBuilder prepareScribe(OAuth2IdentityProvider.OAuth2Context context) {
+  private ServiceBuilder newScribeBuilder(OAuth2IdentityProvider.OAuth2Context context) {
     if (!isEnabled()) {
       throw new IllegalStateException("Bitbucket authentication is disabled");
     }

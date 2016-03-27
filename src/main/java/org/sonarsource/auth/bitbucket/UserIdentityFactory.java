@@ -66,7 +66,7 @@ public class UserIdentityFactory {
 
   private static String generateName(GsonUser gson) {
     String name = gson.getDisplayName();
-    return name == null ? gson.getUsername() : name;
+    return name == null || name.isEmpty() ? gson.getUsername() : name;
   }
 
   private String generateUniqueLogin(GsonUser gsonUser) {

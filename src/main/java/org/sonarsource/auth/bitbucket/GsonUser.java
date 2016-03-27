@@ -21,6 +21,8 @@ package org.sonarsource.auth.bitbucket;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 
 /**
  * Lite representation of JSON response of GET https://api.bitbucket.org/2.0/user
@@ -38,7 +40,7 @@ public class GsonUser {
     // http://stackoverflow.com/a/18645370/229031
   }
 
-  public GsonUser(String username, String displayName) {
+  GsonUser(String username, @Nullable  String displayName) {
     this.username = username;
     this.displayName = displayName;
   }
@@ -47,6 +49,7 @@ public class GsonUser {
     return username;
   }
 
+  @CheckForNull
   public String getDisplayName() {
     return displayName;
   }
