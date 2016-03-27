@@ -35,6 +35,8 @@ import org.sonar.api.server.authentication.UserIdentity;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
+import static java.lang.String.format;
+
 @ServerSide
 public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
@@ -46,10 +48,12 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
   private final BitbucketSettings settings;
   private final UserIdentityFactory userIdentityFactory;
+  private final BitbucketScribeApi scribe;
 
-  public BitbucketIdentityProvider(BitbucketSettings settings, UserIdentityFactory userIdentityFactory) {
+  public BitbucketIdentityProvider(BitbucketSettings settings, UserIdentityFactory userIdentityFactory, BitbucketScribeApi scribe) {
     this.settings = settings;
     this.userIdentityFactory = userIdentityFactory;
+    this.scribe = scribe;
   }
 
   @Override
@@ -104,22 +108,23 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     context.redirectToRequestedPage();
   }
 
-  private static GsonUser requestUser(OAuthService scribe, Token accessToken) {
-    OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user", scribe);
+  private GsonUser requestUser(OAuthService scribe, Token accessToken) {
+    OAuthRequest userRequest = new OAuthRequest(Verb.GET, settings.apiURL() + "2.0/user", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response userResponse = userRequest.send();
 
+    if (!userResponse.isSuccessful()) {
+      throw new IllegalStateException(format("Can not get Bitbucket user profile. HTTP code: %s, response: %s",
+        userResponse.getCode(), userResponse.getBody()));
+    }
     String userResponseBody = userResponse.getBody();
     LOGGER.trace("User response received : %s", userResponseBody);
-
-    // TODO test if successful and if information is available. Callback can be called even if the request scope
-    // was not accepted by user
     return GsonUser.parse(userResponseBody);
   }
 
   @CheckForNull
-  private static GsonEmails requestEmails(OAuthService scribe, Token accessToken) {
-    OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user/emails", scribe);
+  private GsonEmails requestEmails(OAuthService scribe, Token accessToken) {
+    OAuthRequest userRequest = new OAuthRequest(Verb.GET, settings.apiURL() + "2.0/user/emails", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response emailsResponse = userRequest.send();
     if (emailsResponse.isSuccessful()) {
@@ -133,7 +138,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
       throw new IllegalStateException("Bitbucket authentication is disabled");
     }
     return new ServiceBuilder()
-      .provider(BitbucketScribeApi.class)
+      .provider(scribe)
       .apiKey(settings.clientId())
       .apiSecret(settings.clientSecret())
       .grantType("authorization_code")

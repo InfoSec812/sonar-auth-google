@@ -40,7 +40,8 @@ public class BitbucketIdentityProviderTest {
   Settings settings = new Settings(new PropertyDefinitions(BitbucketSettings.definitions()));
   BitbucketSettings bitbucketSettings = new BitbucketSettings(settings);
   UserIdentityFactory userIdentityFactory = mock(UserIdentityFactory.class);
-  BitbucketIdentityProvider underTest = new BitbucketIdentityProvider(bitbucketSettings, userIdentityFactory);
+  BitbucketScribeApi scribeApi = new BitbucketScribeApi(bitbucketSettings);
+  BitbucketIdentityProvider underTest = new BitbucketIdentityProvider(bitbucketSettings, userIdentityFactory, scribeApi);
 
   @Test
   public void check_fields() {

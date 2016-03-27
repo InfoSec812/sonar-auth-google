@@ -23,12 +23,13 @@ import com.github.scribejava.core.extractors.JsonTokenExtractor;
 import com.github.scribejava.core.model.OAuthConfig;
 import com.github.scribejava.core.model.Verb;
 import org.junit.Test;
+import org.sonar.api.config.Settings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BitbucketScribeApiTest {
 
-  BitbucketScribeApi underTest = new BitbucketScribeApi();
+  BitbucketScribeApi underTest = new BitbucketScribeApi(new BitbucketSettings(new Settings()));
 
   @Test
   public void getAccessTokenEndpoint() {
@@ -42,14 +43,14 @@ public class BitbucketScribeApiTest {
 
   @Test
   public void getAuthorizationUrl() {
-    OAuthConfig oAuthConfig = new OAuthConfig("key", null, "callback", null, "scope", null, null, null, null);
+    OAuthConfig oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-      "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback&scope=scope"
+      "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
       );
 
-    oAuthConfig = new OAuthConfig("key", null, "callback", null, null, null, null, null, null);
+    oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-      "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback"
+      "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
       );
   }
 

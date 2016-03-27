@@ -99,6 +99,16 @@ public class BitbucketSettingsTest {
   }
 
   @Test
+  public void default_apiUrl() {
+    assertThat(underTest.apiURL()).isEqualTo("https://api.bitbucket.org/");
+  }
+
+  @Test
+  public void default_webUrl() {
+    assertThat(underTest.webURL()).isEqualTo("https://bitbucket.org/");
+  }
+
+  @Test
   public void definitions() {
     assertThat(BitbucketSettings.definitions()).hasSize(5);
   }

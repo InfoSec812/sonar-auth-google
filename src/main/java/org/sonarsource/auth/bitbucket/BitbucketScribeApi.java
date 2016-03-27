@@ -24,16 +24,22 @@ import com.github.scribejava.core.extractors.AccessTokenExtractor;
 import com.github.scribejava.core.extractors.JsonTokenExtractor;
 import com.github.scribejava.core.model.OAuthConfig;
 import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.utils.OAuthEncoder;
+import org.sonar.api.server.ServerSide;
 
-import static java.lang.String.format;
+import static com.github.scribejava.core.utils.OAuthEncoder.encode;
 
+@ServerSide
 public class BitbucketScribeApi extends DefaultApi20 {
-  private static final String TOKEN_URL = "https://bitbucket.org/site/oauth2/access_token";
+
+  private final BitbucketSettings settings;
+
+  public BitbucketScribeApi(BitbucketSettings settings) {
+    this.settings = settings;
+  }
 
   @Override
   public String getAccessTokenEndpoint() {
-    return TOKEN_URL;
+    return settings.webURL() + "site/oauth2/access_token";
   }
 
   @Override
@@ -43,12 +49,11 @@ public class BitbucketScribeApi extends DefaultApi20 {
 
   @Override
   public String getAuthorizationUrl(OAuthConfig config) {
-    StringBuilder sb = new StringBuilder(format("https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s", config.getApiKey(),
-      OAuthEncoder.encode(config.getCallback())));
-    if (config.hasScope()) {
-      sb.append('&').append("scope").append('=').append(OAuthEncoder.encode(config.getScope()));
-    }
-    return sb.toString();
+    return new StringBuilder(settings.webURL())
+      .append("site/oauth2/authorize?response_type=code&client_id=").append(config.getApiKey())
+      .append("&redirect_uri=").append(encode(config.getCallback()))
+      .append("&scope=").append(encode(config.getScope()))
+      .toString();
   }
 
   @Override

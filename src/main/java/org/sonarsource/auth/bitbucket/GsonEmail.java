@@ -34,11 +34,6 @@ public class GsonEmail {
     // http://stackoverflow.com/a/18645370/229031
   }
 
-  public GsonEmail(boolean isPrimary, String email) {
-    this.isPrimary = isPrimary;
-    this.email = email;
-  }
-
   public boolean isPrimary() {
     return isPrimary;
   }

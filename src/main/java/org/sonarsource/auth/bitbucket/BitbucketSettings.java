@@ -37,12 +37,15 @@ public class BitbucketSettings {
   public static final String CONSUMER_SECRET = "sonar.auth.bitbucket.clientSecret.secured";
   public static final String ENABLED = "sonar.auth.bitbucket.enabled";
   public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.bitbucket.allowUsersToSignUp";
-
+  // URLs are not configurable yet
+  public static final String API_URL = "sonar.auth.bitbucket.apiUrl";
+  public static final String DEFAULT_API_URL = "https://api.bitbucket.org/";
+  public static final String WEB_URL = "sonar.auth.bitbucket.webUrl";
+  public static final String DEFAULT_WEB_URL = "https://bitbucket.org/";
   public static final String LOGIN_STRATEGY = "sonar.auth.bitbucket.loginStrategy";
   public static final String LOGIN_STRATEGY_UNIQUE = "Unique";
   public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Bitbucket login";
   public static final String LOGIN_STRATEGY_DEFAULT_VALUE = LOGIN_STRATEGY_UNIQUE;
-
   public static final String CATEGORY = "security";
   public static final String SUBCATEGORY = "bitbucket";
 
@@ -72,6 +75,29 @@ public class BitbucketSettings {
 
   public String loginStrategy() {
     return settings.getString(LOGIN_STRATEGY);
+  }
+
+  public String webURL() {
+    String url = settings.getString(WEB_URL);
+    if (url == null) {
+      url = DEFAULT_WEB_URL;
+    }
+    return urlWithEndingSlash(url);
+  }
+
+  public String apiURL() {
+    String url = settings.getString(API_URL);
+    if (url == null) {
+      url = DEFAULT_API_URL;
+    }
+    return urlWithEndingSlash(url);
+  }
+
+  private static String urlWithEndingSlash(String url) {
+    if (!url.endsWith("/")) {
+      return url + "/";
+    }
+    return url;
   }
 
   public static List<PropertyDefinition> definitions() {

@@ -27,7 +27,7 @@ import static java.lang.String.format;
 import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_UNIQUE;
 
 /**
- * Converts Bitbucket JSON documents to {@link UserIdentity}
+ * Converts Bitbucket JSON responses to {@link UserIdentity}
  */
 @ServerSide
 public class UserIdentityFactory {
