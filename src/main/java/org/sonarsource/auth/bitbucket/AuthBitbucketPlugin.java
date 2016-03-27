@@ -27,8 +27,9 @@ public class AuthBitbucketPlugin extends SonarPlugin {
   @Override
   public List getExtensions() {
     List extensions = new ArrayList();
-    extensions.add(BitbucketIdentityProvider.class);
     extensions.add(BitbucketSettings.class);
+    extensions.add(UserIdentityFactory.class);
+    extensions.add(BitbucketIdentityProvider.class);
     extensions.addAll(BitbucketSettings.definitions());
     return extensions;
   }

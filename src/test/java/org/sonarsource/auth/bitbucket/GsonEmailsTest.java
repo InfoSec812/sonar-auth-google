@@ -82,7 +82,7 @@ public class GsonEmailsTest {
       "\"page\": 1," +
       "\"size\": 2" +
       "}";
-    String email = GsonEmails.extractPrimaryEmail(json);
+    String email = GsonEmails.parse(json).extractPrimaryEmail();
     assertThat(email).isEqualTo("primary@bar.com");
   }
 
@@ -95,7 +95,7 @@ public class GsonEmailsTest {
       "\"page\": 1," +
       "\"size\": 0" +
       "}";
-    String email = GsonEmails.extractPrimaryEmail(json);
+    String email = GsonEmails.parse(json).extractPrimaryEmail();
     assertThat(email).isNull();
   }
 }

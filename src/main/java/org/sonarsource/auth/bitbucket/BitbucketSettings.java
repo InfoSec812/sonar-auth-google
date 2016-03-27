@@ -63,18 +63,19 @@ public class BitbucketSettings {
   }
 
   public boolean isEnabled() {
-    return settings.getBoolean(ENABLED) && clientId() != null && clientSecret() != null && loginStrategy() != null;
+    return settings.getBoolean(ENABLED) && clientId() != null && clientSecret() != null;
   }
 
   public boolean allowUsersToSignUp() {
     return settings.getBoolean(ALLOW_USERS_TO_SIGN_UP);
   }
 
-  public String loginStrategy(){
+  public String loginStrategy() {
     return settings.getString(LOGIN_STRATEGY);
   }
 
   public static List<PropertyDefinition> definitions() {
+    int index = 1;
     return Arrays.asList(
       PropertyDefinition.builder(ENABLED)
         .name("Enabled")
@@ -83,21 +84,21 @@ public class BitbucketSettings {
         .subCategory(SUBCATEGORY)
         .type(PropertyType.BOOLEAN)
         .defaultValue(String.valueOf(false))
-        .index(1)
+        .index(index++)
         .build(),
       PropertyDefinition.builder(CONSUMER_KEY)
         .name("OAuth consumer Key")
         .description("Consumer Key provided by Bitbucket when registering the consumer.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
-        .index(2)
+        .index(index++)
         .build(),
       PropertyDefinition.builder(CONSUMER_SECRET)
         .name("OAuth consumer Secret")
         .description("Consumer Secret provided by Bitbucket when registering the consumer.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
-        .index(3)
+        .index(index++)
         .build(),
       PropertyDefinition.builder(ALLOW_USERS_TO_SIGN_UP)
         .name("Allow users to sign-up")
@@ -111,14 +112,14 @@ public class BitbucketSettings {
       PropertyDefinition.builder(LOGIN_STRATEGY)
         .name("Login generation strategy")
         .description(format("When the login strategy is set to '%s', the user's login will be auto-generated the first time so that it is unique. " +
-            "When the login strategy is set to '%s', the user's login will be the Bitbucket login.",
+          "When the login strategy is set to '%s', the user's login will be the Bitbucket login.",
           LOGIN_STRATEGY_UNIQUE, LOGIN_STRATEGY_PROVIDER_LOGIN))
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .type(SINGLE_SELECT_LIST)
         .defaultValue(LOGIN_STRATEGY_DEFAULT_VALUE)
         .options(LOGIN_STRATEGY_UNIQUE, LOGIN_STRATEGY_PROVIDER_LOGIN)
-        .index(5)
+        .index(index++)
         .build()
       );
   }

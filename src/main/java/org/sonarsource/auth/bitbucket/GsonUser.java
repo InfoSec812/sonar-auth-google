@@ -32,14 +32,15 @@ public class GsonUser {
   @SerializedName("display_name")
   private String displayName;
 
-  public GsonUser setUsername(String username) {
-    this.username = username;
-    return this;
+  public GsonUser() {
+    // even if empty constructor is not required for Gson, it is strongly
+    // recommended:
+    // http://stackoverflow.com/a/18645370/229031
   }
 
-  public GsonUser setDisplayName(String displayName) {
+  public GsonUser(String username, String displayName) {
+    this.username = username;
     this.displayName = displayName;
-    return this;
   }
 
   public String getUsername() {

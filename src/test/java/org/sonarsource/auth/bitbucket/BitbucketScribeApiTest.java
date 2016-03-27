@@ -31,30 +31,30 @@ public class BitbucketScribeApiTest {
   BitbucketScribeApi underTest = new BitbucketScribeApi();
 
   @Test
-  public void getAccessTokenEndpoint() throws Exception {
+  public void getAccessTokenEndpoint() {
     assertThat(underTest.getAccessTokenEndpoint()).isEqualTo("https://bitbucket.org/site/oauth2/access_token");
   }
 
   @Test
-  public void getAccessTokenVerb() throws Exception {
+  public void getAccessTokenVerb() {
     assertThat(underTest.getAccessTokenVerb()).isEqualTo(Verb.POST);
   }
 
   @Test
-  public void getAuthorizationUrl() throws Exception {
+  public void getAuthorizationUrl() {
     OAuthConfig oAuthConfig = new OAuthConfig("key", null, "callback", null, "scope", null, null, null, null);
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
       "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback&scope=scope"
-    );
+      );
 
     oAuthConfig = new OAuthConfig("key", null, "callback", null, null, null, null, null, null);
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
       "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback"
-    );
+      );
   }
 
   @Test
-  public void getAccessTokenExtractor() throws Exception {
+  public void getAccessTokenExtractor() {
     assertThat(underTest.getAccessTokenExtractor()).isInstanceOf(JsonTokenExtractor.class);
   }
 }

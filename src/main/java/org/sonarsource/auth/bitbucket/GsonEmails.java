@@ -39,9 +39,8 @@ public class GsonEmails {
   }
 
   @CheckForNull
-  public static String extractPrimaryEmail(String json) {
-    GsonEmails emails = parse(json);
-    for (GsonEmail gsonEmail : emails.getEmails()) {
+  public String extractPrimaryEmail() {
+    for (GsonEmail gsonEmail : emails) {
       if (gsonEmail.isPrimary()) {
         return gsonEmail.getEmail();
       }

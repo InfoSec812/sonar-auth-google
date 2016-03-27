@@ -26,17 +26,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GsonUserTest {
 
   @Test
-  public void test_getter_and_setter() throws Exception {
-    GsonUser underTest = new GsonUser()
-      .setUsername("john")
-      .setDisplayName("John");
+  public void test_getter_and_setter() {
+    GsonUser underTest = new GsonUser("john", "John");
 
     assertThat(underTest.getUsername()).isEqualTo("john");
     assertThat(underTest.getDisplayName()).isEqualTo("John");
   }
 
   @Test
-  public void parse_from_json() throws Exception {
+  public void parse_from_json() {
     GsonUser underTest = GsonUser.parse("{username:john, display_name:John}");
 
     assertThat(underTest.getUsername()).isEqualTo("john");

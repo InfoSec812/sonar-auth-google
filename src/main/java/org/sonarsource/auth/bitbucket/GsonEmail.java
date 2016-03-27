@@ -28,6 +28,17 @@ public class GsonEmail {
   @SerializedName("email")
   private String email;
 
+  public GsonEmail() {
+    // even if empty constructor is not required for Gson, it is strongly
+    // recommended:
+    // http://stackoverflow.com/a/18645370/229031
+  }
+
+  public GsonEmail(boolean isPrimary, String email) {
+    this.isPrimary = isPrimary;
+    this.email = email;
+  }
+
   public boolean isPrimary() {
     return isPrimary;
   }

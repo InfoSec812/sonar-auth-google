@@ -35,27 +35,26 @@ import org.sonar.api.server.authentication.UserIdentity;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
-import static java.lang.String.format;
-import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_PROVIDER_LOGIN;
-import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_UNIQUE;
-
 @ServerSide
 public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
   private static final Logger LOGGER = Loggers.get(BitbucketIdentityProvider.class);
 
   public static final String REQUIRED_SCOPE = "account";
+  public static final String KEY = "bitbucket";
   private static final Token EMPTY_TOKEN = null;
 
   private final BitbucketSettings settings;
+  private final UserIdentityFactory userIdentityFactory;
 
-  public BitbucketIdentityProvider(BitbucketSettings settings) {
+  public BitbucketIdentityProvider(BitbucketSettings settings, UserIdentityFactory userIdentityFactory) {
     this.settings = settings;
+    this.userIdentityFactory = userIdentityFactory;
   }
 
   @Override
   public String getKey() {
-    return "bitbucket";
+    return KEY;
   }
 
   @Override
@@ -99,14 +98,8 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     Token accessToken = scribe.getAccessToken(EMPTY_TOKEN, new Verifier(oAuthVerifier));
 
     GsonUser gsonUser = requestUser(scribe, accessToken);
-    String primaryEmail = requestPrimaryEmail(scribe, accessToken);
-
-    UserIdentity userIdentity = UserIdentity.builder()
-      .setProviderLogin(gsonUser.getUsername())
-      .setLogin(getLogin(gsonUser))
-      .setName(gsonUser.getDisplayName())
-      .setEmail(primaryEmail)
-      .build();
+    GsonEmails gsonEmails = requestEmails(scribe, accessToken);
+    UserIdentity userIdentity = userIdentityFactory.create(gsonUser, gsonEmails);
     context.authenticate(userIdentity);
     context.redirectToRequestedPage();
   }
@@ -125,19 +118,19 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
   }
 
   @CheckForNull
-  private static String requestPrimaryEmail(OAuthService scribe, Token accessToken) {
+  private static GsonEmails requestEmails(OAuthService scribe, Token accessToken) {
     OAuthRequest userRequest = new OAuthRequest(Verb.GET, "https://api.bitbucket.org/2.0/user/emails", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response emailsResponse = userRequest.send();
     if (emailsResponse.isSuccessful()) {
-      return GsonEmails.extractPrimaryEmail(emailsResponse.getBody());
+      return GsonEmails.parse(emailsResponse.getBody());
     }
     return null;
   }
 
   private ServiceBuilder prepareScribe(OAuth2IdentityProvider.OAuth2Context context) {
     if (!isEnabled()) {
-      throw new IllegalStateException("Bitbucket Authentication is disabled");
+      throw new IllegalStateException("Bitbucket authentication is disabled");
     }
     return new ServiceBuilder()
       .provider(BitbucketScribeApi.class)
@@ -146,20 +139,4 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
       .grantType("authorization_code")
       .callback(context.getCallbackUrl());
   }
-
-  private String getLogin(GsonUser gsonUser) {
-    String loginStrategy = settings.loginStrategy();
-    if (LOGIN_STRATEGY_UNIQUE.equals(loginStrategy)) {
-      return generateUniqueLogin(gsonUser);
-    } else if (LOGIN_STRATEGY_PROVIDER_LOGIN.equals(loginStrategy)) {
-      return gsonUser.getUsername();
-    } else {
-      throw new IllegalStateException(format("Login strategy not found : %s", loginStrategy));
-    }
-  }
-
-  private String generateUniqueLogin(GsonUser gsonUser) {
-    return gsonUser.getUsername() + "@" + getKey();
-  }
-
 }

@@ -22,6 +22,7 @@ package org.sonarsource.auth.bitbucket;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.sonar.api.config.PropertyDefinitions;
 import org.sonar.api.config.Settings;
 import org.sonar.api.server.authentication.OAuth2IdentityProvider;
 
@@ -36,14 +37,13 @@ public class BitbucketIdentityProviderTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  Settings settings = new Settings();
-
+  Settings settings = new Settings(new PropertyDefinitions(BitbucketSettings.definitions()));
   BitbucketSettings bitbucketSettings = new BitbucketSettings(settings);
-
-  BitbucketIdentityProvider underTest = new BitbucketIdentityProvider(bitbucketSettings);
+  UserIdentityFactory userIdentityFactory = mock(UserIdentityFactory.class);
+  BitbucketIdentityProvider underTest = new BitbucketIdentityProvider(bitbucketSettings, userIdentityFactory);
 
   @Test
-  public void check_fields() throws Exception {
+  public void check_fields() {
     assertThat(underTest.getKey()).isEqualTo("bitbucket");
     assertThat(underTest.getName()).isEqualTo("Bitbucket");
     assertThat(underTest.getDisplay().getIconPath()).isEqualTo("/static/authbitbucket/bitbucket.svg");
@@ -51,7 +51,7 @@ public class BitbucketIdentityProviderTest {
   }
 
   @Test
-  public void is_enabled() throws Exception {
+  public void is_enabled() {
     settings.setProperty("sonar.auth.bitbucket.clientId.secured", "id");
     settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", "secret");
     settings.setProperty("sonar.auth.bitbucket.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
@@ -63,7 +63,7 @@ public class BitbucketIdentityProviderTest {
   }
 
   @Test
-  public void init() throws Exception {
+  public void init() {
     setSettings(true);
     OAuth2IdentityProvider.InitContext context = mock(OAuth2IdentityProvider.InitContext.class);
     when(context.generateCsrfState()).thenReturn("state");
@@ -75,12 +75,12 @@ public class BitbucketIdentityProviderTest {
   }
 
   @Test
-  public void fail_to_init_when_disabled() throws Exception {
+  public void fail_to_init_when_disabled() {
     setSettings(false);
     OAuth2IdentityProvider.InitContext context = mock(OAuth2IdentityProvider.InitContext.class);
 
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Bitbucket Authentication is disabled");
+    thrown.expectMessage("Bitbucket authentication is disabled");
     underTest.init(context);
   }
 
