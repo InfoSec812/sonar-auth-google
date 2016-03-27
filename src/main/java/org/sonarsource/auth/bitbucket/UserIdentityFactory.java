@@ -69,7 +69,7 @@ public class UserIdentityFactory {
     return name == null || name.isEmpty() ? gson.getUsername() : name;
   }
 
-  private String generateUniqueLogin(GsonUser gsonUser) {
+  private static String generateUniqueLogin(GsonUser gsonUser) {
     return format("%s@%s", gsonUser.getUsername(), BitbucketIdentityProvider.KEY);
   }
 }

@@ -48,12 +48,12 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
   private final BitbucketSettings settings;
   private final UserIdentityFactory userIdentityFactory;
-  private final BitbucketScribeApi scribe;
+  private final BitbucketScribeApi scribeApi;
 
-  public BitbucketIdentityProvider(BitbucketSettings settings, UserIdentityFactory userIdentityFactory, BitbucketScribeApi scribe) {
+  public BitbucketIdentityProvider(BitbucketSettings settings, UserIdentityFactory userIdentityFactory, BitbucketScribeApi scribeApi) {
     this.settings = settings;
     this.userIdentityFactory = userIdentityFactory;
-    this.scribe = scribe;
+    this.scribeApi = scribeApi;
   }
 
   @Override
@@ -138,7 +138,7 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
       throw new IllegalStateException("Bitbucket authentication is disabled");
     }
     return new ServiceBuilder()
-      .provider(scribe)
+      .provider(scribeApi)
       .apiKey(settings.clientId())
       .apiSecret(settings.clientSecret())
       .grantType("authorization_code")
