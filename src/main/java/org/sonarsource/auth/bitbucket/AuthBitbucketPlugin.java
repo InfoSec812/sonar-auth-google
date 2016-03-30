@@ -30,6 +30,7 @@ public class AuthBitbucketPlugin extends SonarPlugin {
     extensions.add(BitbucketSettings.class);
     extensions.add(UserIdentityFactory.class);
     extensions.add(BitbucketIdentityProvider.class);
+    extensions.add(BitbucketScribeApi.class);
     extensions.addAll(BitbucketSettings.definitions());
     return extensions;
   }
