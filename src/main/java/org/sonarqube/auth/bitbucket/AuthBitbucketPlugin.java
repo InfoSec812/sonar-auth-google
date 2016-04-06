@@ -17,19 +17,21 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.auth.bitbucket;
+package org.sonarqube.auth.bitbucket;
 
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
+import org.sonar.api.SonarPlugin;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class AuthBitbucketPluginTest {
-
-  AuthBitbucketPlugin underTest = new AuthBitbucketPlugin();
-
-  @Test
-  public void test_extensions() {
-    assertThat(underTest.getExtensions()).hasSize(9);
+public class AuthBitbucketPlugin extends SonarPlugin {
+  @Override
+  public List getExtensions() {
+    List extensions = new ArrayList();
+    extensions.add(BitbucketSettings.class);
+    extensions.add(UserIdentityFactory.class);
+    extensions.add(BitbucketIdentityProvider.class);
+    extensions.add(BitbucketScribeApi.class);
+    extensions.addAll(BitbucketSettings.definitions());
+    return extensions;
   }
-
 }

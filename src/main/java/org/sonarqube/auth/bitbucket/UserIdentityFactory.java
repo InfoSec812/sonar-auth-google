@@ -17,14 +17,14 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.auth.bitbucket;
+package org.sonarqube.auth.bitbucket;
 
 import javax.annotation.Nullable;
 import org.sonar.api.server.ServerSide;
 import org.sonar.api.server.authentication.UserIdentity;
 
 import static java.lang.String.format;
-import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_UNIQUE;
+import static org.sonarqube.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_UNIQUE;
 
 /**
  * Converts Bitbucket JSON responses to {@link UserIdentity}

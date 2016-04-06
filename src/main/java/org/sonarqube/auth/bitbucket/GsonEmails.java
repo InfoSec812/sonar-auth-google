@@ -17,45 +17,34 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.auth.bitbucket;
+package org.sonarqube.auth.bitbucket;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 
-/**
- * Lite representation of JSON response of GET https://api.bitbucket.org/2.0/user
- */
-public class GsonUser {
-  @SerializedName("username")
-  private String username;
+public class GsonEmails {
 
-  @SerializedName("display_name")
-  private String displayName;
+  @SerializedName("values")
+  private List<GsonEmail> emails;
 
-  public GsonUser() {
-    // even if empty constructor is not required for Gson, it is strongly
-    // recommended:
-    // http://stackoverflow.com/a/18645370/229031
+  public List<GsonEmail> getEmails() {
+    return emails;
   }
 
-  GsonUser(String username, @Nullable  String displayName) {
-    this.username = username;
-    this.displayName = displayName;
-  }
-
-  public String getUsername() {
-    return username;
+  public static GsonEmails parse(String json) {
+    Gson gson = new Gson();
+    return gson.fromJson(json, GsonEmails.class);
   }
 
   @CheckForNull
-  public String getDisplayName() {
-    return displayName;
-  }
-
-  public static GsonUser parse(String json) {
-    Gson gson = new Gson();
-    return gson.fromJson(json, GsonUser.class);
+  public String extractPrimaryEmail() {
+    for (GsonEmail gsonEmail : emails) {
+      if (gsonEmail.isPrimary()) {
+        return gsonEmail.getEmail();
+      }
+    }
+    return null;
   }
 }

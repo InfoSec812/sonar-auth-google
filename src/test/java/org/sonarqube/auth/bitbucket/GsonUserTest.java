@@ -17,28 +17,28 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.auth.bitbucket;
+package org.sonarqube.auth.bitbucket;
 
-import com.google.gson.annotations.SerializedName;
+import org.junit.Test;
 
-public class GsonEmail {
-  @SerializedName("is_primary")
-  private boolean isPrimary;
+import static org.assertj.core.api.Assertions.assertThat;
 
-  @SerializedName("email")
-  private String email;
+public class GsonUserTest {
 
-  public GsonEmail() {
-    // even if empty constructor is not required for Gson, it is strongly
-    // recommended:
-    // http://stackoverflow.com/a/18645370/229031
+  @Test
+  public void test_getter_and_setter() {
+    GsonUser underTest = new GsonUser("john", "John");
+
+    assertThat(underTest.getUsername()).isEqualTo("john");
+    assertThat(underTest.getDisplayName()).isEqualTo("John");
   }
 
-  public boolean isPrimary() {
-    return isPrimary;
+  @Test
+  public void parse_from_json() {
+    GsonUser underTest = GsonUser.parse("{username:john, display_name:John}");
+
+    assertThat(underTest.getUsername()).isEqualTo("john");
+    assertThat(underTest.getDisplayName()).isEqualTo("John");
   }
 
-  public String getEmail() {
-    return email;
-  }
 }

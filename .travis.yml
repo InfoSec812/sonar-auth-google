@@ -3,8 +3,7 @@ language: java
 jdk:
   - oraclejdk7
 
-script:
-  - ./travis.sh
+script: mvn verify -Dmaven.test.redirectTestOutputToFile=false -B -e -V
 
 install: true
 
@@ -16,7 +15,3 @@ cache:
     # for analysis
     - $HOME/.sonar
 
-notifications:
-  email: false
-  webhooks:
-    - secure: "ZL4lNvaiQDo4CEosNnkrgPkz4Q62fMAxIIRki0KnYfHv0IiEBKSCNp+DHMjR5Df0HYEgYRKzlL8R5rjiLJxcEgEgJM8TfUZBUBX94rL8ejVBSzvS1OLq9/kUEa9qCGNSpQe/AZPwqnSPple+t+euFJmJ5av0EvjehL2OC6nfh7UxcgirjSFl0+Z+G+z5AWRBRx55fkAsM3iSxIK80app6bLKjzC1uSk7cXVtsCir+c1+J9nPkU27DP8itT1EIp1GvQj41oZ9sQtHfe6XbV6i7YmR7ijqvHXxmbEOGoDWracq9f/YDSj3+zqt8qGe9ixjrVhLuO9YAsOlJX+gxzCexxFHYUMkIQ02xmdvgPXVv2Z2xwWKb9soJey9MOheIdgLC8hwCbCJF2CfREV2Xplywuy9m3gd8kcOzDUkizyWvTvnTm0NBnN0L7Lafv7TiiFQVjG9FiDF9K1YpcELrNxKdxBVB1MlKJDT3s5f7hTUC/pj5GwNOAkR/7OROBLRTVpsBd2X3QvnDZIg+NZw2BmegTq7GbVcT83opeykKoRAfg+e35sYs4BGZJA4f0/hX0D54qVVqjGu6SfCBMZFfcKTUAQnSzitH7Q10RNoB17NBnSHNAwXgMTPVcNXkqNBTVSpHJH9yw+tLHkdMt9kkOmCnHznqFmwQwqEchMhUzbtZj0="

@@ -17,28 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.auth.bitbucket;
+@ParametersAreNonnullByDefault
+package org.sonarqube.auth.bitbucket;
 
-import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class GsonUserTest {
-
-  @Test
-  public void test_getter_and_setter() {
-    GsonUser underTest = new GsonUser("john", "John");
-
-    assertThat(underTest.getUsername()).isEqualTo("john");
-    assertThat(underTest.getDisplayName()).isEqualTo("John");
-  }
-
-  @Test
-  public void parse_from_json() {
-    GsonUser underTest = GsonUser.parse("{username:john, display_name:John}");
-
-    assertThat(underTest.getUsername()).isEqualTo("john");
-    assertThat(underTest.getDisplayName()).isEqualTo("John");
-  }
-
-}
+import javax.annotation.ParametersAreNonnullByDefault;

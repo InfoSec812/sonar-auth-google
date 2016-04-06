@@ -1,31 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonarsource.parent</groupId>
-    <artifactId>parent</artifactId>
-    <version>31</version>
-  </parent>
-
-  <groupId>org.sonarsource.auth.bitbucket</groupId>
+  <groupId>org.sonarqube.auth.bitbucket</groupId>
   <artifactId>sonar-auth-bitbucket-plugin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
   <name>Bitbucket Authentication for SonarQube</name>
+  <description>Bitbucket Authentication for SonarQube</description>
   <inceptionYear>2016</inceptionYear>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.pluginClass>org.sonarsource.auth.bitbucket.AuthBitbucketPlugin</sonar.pluginClass>
-
-    <!-- used for deployment to SonarSource Artifactory -->
-    <gitRepositoryName>sonar-auth-bitbucket</gitRepositoryName>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>https://jira.sonarsource.com/projects/SQAUTHBITB</url>
-  </issueManagement>
 
   <scm>
     <connection>scm:git:git@github.com:SonarSource/sonar-auth-bitbucket.git</connection>
@@ -41,11 +30,6 @@
       <organization>SonarSource</organization>
     </developer>
   </developers>
-
-  <organization>
-    <name>SonarSource</name>
-    <url>http://sonarsource.com</url>
-  </organization>
 
   <dependencies>
     <dependency>
@@ -113,5 +97,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>1.15</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pluginClass>org.sonarqube.auth.bitbucket.AuthBitbucketPlugin</pluginClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

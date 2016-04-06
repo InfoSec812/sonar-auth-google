@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.auth.bitbucket;
+package org.sonarqube.auth.bitbucket;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.sonarsource.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_DEFAULT_VALUE;
+import static org.sonarqube.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_DEFAULT_VALUE;
 
 public class BitbucketIdentityProviderTest {
 
