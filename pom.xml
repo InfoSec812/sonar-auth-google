@@ -17,11 +17,16 @@
   </properties>
 
   <scm>
-    <connection>scm:git:git@github.com:SonarSource/sonar-auth-bitbucket.git</connection>
-    <developerConnection>scm:git:git@github.com:SonarSource/sonar-auth-bitbucket.git</developerConnection>
-    <url>https://github.com/SonarSource/sonar-auth-bitbucket</url>
+    <connection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-bitbucket.git</connection>
+    <developerConnection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-bitbucket.git</developerConnection>
+    <url>https://github.com/SonarQubeCommunity/sonar-auth-bitbucket</url>
     <tag>HEAD</tag>
   </scm>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/SonarQubeCommunity/sonar-auth-bitbucket/issues</url>
+  </issueManagement>
 
   <developers>
     <developer>
