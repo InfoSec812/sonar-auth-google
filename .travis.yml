@@ -3,7 +3,7 @@ language: java
 jdk:
   - oraclejdk7
 
-script: mvn verify -Dmaven.test.redirectTestOutputToFile=false -B -e -V
+script: ./travis.sh
 
 install: true
 
