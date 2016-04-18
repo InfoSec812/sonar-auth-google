@@ -14,7 +14,7 @@ if [ "${TRAVIS_BRANCH}" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; 
 
   export MAVEN_OPTS="-Xmx1536m -Xms128m"
   mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar \
-      -Pcoverage-per-test,deploy-sonarsource \
+      -Pcoverage-per-test \
       -Dmaven.test.redirectTestOutputToFile=false \
       -Dsonar.projectKey=$SONAR_PROJECT_KEY \
       -Dsonar.host.url=$SONAR_HOST_URL \
