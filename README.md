@@ -1,4 +1,5 @@
 # Bitbucket Authentication Plug-in for SonarQube #
+[![Build Status](https://api.travis-ci.org/SonarQubeCommunity/sonar-auth-bitbucket.svg)](https://travis-ci.org/SonarQubeCommunity/sonar-auth-bitbucket)
 
 ## Description ##
 This plugin enables user authentication and Single Sign-On via [Bitbucket](https://bitbucket.org/).
