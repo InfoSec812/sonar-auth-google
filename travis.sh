@@ -51,4 +51,4 @@ else
 fi
 
 echo "Generating release notes from git history"
-git show -s --pretty=format:"%h - %<|(35)%an%s" $(git rev-list --tags --max-count=1) $(git show | grep "^commit" | awk '{print $2}') | tee target/RELEASE_NOTES
+git show -s --pretty=format:"%h - %<|(35)%an%s" $(git rev-list --tags --max-count=1)...$(git show | grep "^commit" | awk '{print $2}') | tee target/RELEASE_NOTES
