@@ -51,4 +51,5 @@ else
 fi
 
 LAST_TAG=$(git rev-list --tags --max-count=1)
+echo "Generating release notes from git history since: ${LAST_TAG}"
 git show -s --format=%ad ${LAST_TAG} | tee target/RELEASE_NOTES
