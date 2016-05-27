@@ -13,7 +13,7 @@ if [ "${TRAVIS_BRANCH}" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; 
   git fetch --unshallow || true
 
   export MAVEN_OPTS="-Xmx1536m -Xms128m"
-  mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar \
+  mvn cobertura:cobertura verify sonar:sonar \
       -Pcoverage-per-test \
       -Dmaven.test.redirectTestOutputToFile=false \
       -Dsonar.projectKey=$SONAR_PROJECT_KEY \
@@ -28,7 +28,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
   # in Maven local repository. Phase "verify" is enough.
 
   export MAVEN_OPTS="-Xmx1G -Xms128m"
-  mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar \
+  mvn cobertura:cobertura verify sonar:sonar \
       -Dmaven.test.redirectTestOutputToFile=false \
       -Dsonar.projectKey=$SONAR_PROJECT_KEY \
       -Dsonar.analysis.mode=issues \

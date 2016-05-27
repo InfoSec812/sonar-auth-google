@@ -31,7 +31,6 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 
 import static java.lang.String.format;
@@ -102,10 +101,10 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
 
     GsonUser gsonUser = requestUser(scribe, accessToken);
     String redirectTo;
-    if (settings.oauthDomain()!=null && gsonUser.getEmail().endsWith("@"+settings.oauthDomain())) {
+    if (settings.oauthDomain()==null || (settings.oauthDomain()!=null && gsonUser.getEmail().endsWith("@"+settings.oauthDomain()))) {
+      redirectTo = settings.getSonarBaseURL();
       UserIdentity userIdentity = userIdentityFactory.create(gsonUser);
       context.authenticate(userIdentity);
-      redirectTo = settings.getSonarBaseURL();
     } else {
       redirectTo = settings.getSonarBaseURL()+"/sessions/unauthorized#";
     }

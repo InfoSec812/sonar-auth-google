@@ -52,18 +52,6 @@ public class GoogleIdentityProviderTest {
   }
 
   @Test
-  public void is_enabled() {
-    settings.setProperty("sonar.auth.google.clientId.secured", "id");
-    settings.setProperty("sonar.auth.google.clientSecret.secured", "secret");
-    settings.setProperty("sonar.auth.google.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
-    settings.setProperty("sonar.auth.google.enabled", true);
-    assertThat(underTest.isEnabled()).isTrue();
-
-    settings.setProperty("sonar.auth.google.enabled", false);
-    assertThat(underTest.isEnabled()).isFalse();
-  }
-
-  @Test
   public void init() {
     setSettings(true);
     OAuth2IdentityProvider.InitContext context = mock(OAuth2IdentityProvider.InitContext.class);
