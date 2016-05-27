@@ -43,7 +43,7 @@ public class GoogleSettings {
   public static final String API_URL = "sonar.auth.google.apiUrl";
   public static final String DEFAULT_API_URL = "https://www.googleapis.com/";
   public static final String WEB_URL = "sonar.auth.google.webUrl";
-  public static final String DEFAULT_WEB_URL = "https://accounts.google.com/";
+  public static final String DEFAULT_WEB_URL = "https://accounts.google.com/o/oauth2/auth";
   public static final String LOGIN_STRATEGY = "sonar.auth.google.loginStrategy";
   public static final String LOGIN_STRATEGY_UNIQUE = "Unique";
   public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Google login";
@@ -88,7 +88,7 @@ public class GoogleSettings {
     if (url == null) {
       url = DEFAULT_WEB_URL;
     }
-    return urlWithEndingSlash(url);
+    return url;
   }
 
   public String apiURL() {
@@ -158,8 +158,16 @@ public class GoogleSettings {
         .index(index++)
         .build(),
       PropertyDefinition.builder(LIMIT_DOMAIN)
-        .name("Limit allowed authentication domain")
+        .name("Allowed Domain")
         .description("When set, this will only allow users from the specified GApps domain to authenticate")
+        .category(CATEGORY)
+        .subCategory(SUBCATEGORY)
+        .index(index++)
+        .build(),
+      PropertyDefinition.builder(WEB_URL)
+        .name("Google authentication URI")
+        .description("When set, this will override the URI used to send an authentication request to Google")
+        .defaultValue(DEFAULT_WEB_URL)
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .index(index++)
