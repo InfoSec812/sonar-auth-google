@@ -14,4 +14,13 @@ cache:
     - $HOME/.m2/repository
     # for analysis
     - $HOME/.sonar
-
+before_deploy:
+  - export RELEASE_JAR=$(ls target/sonar-auth-google-plugin-*.jar
+  - echo "Deploying ${RELEASE_JAR} to GitHub"
+deploy:
+  provider: releases
+  api_key: "9c3a2beeb5c59cb519ccfc7ca55e0b1c70731258"
+  file: "${RELEASE_JAR}"
+  skip_cleanup: true
+  on:
+    tags: true
