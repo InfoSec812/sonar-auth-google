@@ -50,6 +50,5 @@ else
       -B -e -V
 fi
 
-LAST_TAG=$(git rev-list --tags --max-count=1)
-echo "Generating release notes from git history since: ${LAST_TAG}"
-git show -s --format=%ad ${LAST_TAG} | tee target/RELEASE_NOTES
+echo "Generating release notes from git history"
+git show -s $(git rev-list --tags --max-count=1) $(git show | grep "^commit" | awk '{print $2}') | tee target/RELEASE_NOTES
