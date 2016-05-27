@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,21 +17,22 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+package org.sonarqube.auth.google;
+
+import org.sonar.api.SonarPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.sonar.api.SonarPlugin;
 
-public class AuthBitbucketPlugin extends SonarPlugin {
+public class AuthGooglePlugin extends SonarPlugin {
   @Override
   public List getExtensions() {
     List extensions = new ArrayList();
-    extensions.add(BitbucketSettings.class);
+    extensions.add(GoogleSettings.class);
     extensions.add(UserIdentityFactory.class);
-    extensions.add(BitbucketIdentityProvider.class);
-    extensions.add(BitbucketScribeApi.class);
-    extensions.addAll(BitbucketSettings.definitions());
+    extensions.add(GoogleIdentityProvider.class);
+    extensions.add(GoogleScribeApi.class);
+    extensions.addAll(GoogleSettings.definitions());
     return extensions;
   }
 }

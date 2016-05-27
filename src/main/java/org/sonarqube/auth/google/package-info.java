@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,19 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+@ParametersAreNonnullByDefault
+package org.sonarqube.auth.google;
 
-import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class AuthBitbucketPluginTest {
-
-  AuthBitbucketPlugin underTest = new AuthBitbucketPlugin();
-
-  @Test
-  public void test_extensions() {
-    assertThat(underTest.getExtensions()).hasSize(9);
-  }
-
-}
+import javax.annotation.ParametersAreNonnullByDefault;

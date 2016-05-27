@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+package org.sonarqube.auth.google;
 
 import com.github.scribejava.core.extractors.JsonTokenExtractor;
 import com.github.scribejava.core.model.OAuthConfig;
@@ -27,13 +27,13 @@ import org.sonar.api.config.Settings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BitbucketScribeApiTest {
+public class GoogleScribeApiTest {
 
-  BitbucketScribeApi underTest = new BitbucketScribeApi(new BitbucketSettings(new Settings()));
+  GoogleScribeApi underTest = new GoogleScribeApi(new GoogleSettings(new Settings()));
 
   @Test
   public void getAccessTokenEndpoint() {
-    assertThat(underTest.getAccessTokenEndpoint()).isEqualTo("https://bitbucket.org/site/oauth2/access_token");
+    assertThat(underTest.getAccessTokenEndpoint()).isEqualTo("https://www.googleapis.com/oauth2/v3/token");
   }
 
   @Test
@@ -45,12 +45,13 @@ public class BitbucketScribeApiTest {
   public void getAuthorizationUrl() {
     OAuthConfig oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-      "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
+            "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
       );
 
     oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
+    oAuthConfig.setState("my-test-state");
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-      "https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
+            "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope&state=my-test-state"
       );
   }
 

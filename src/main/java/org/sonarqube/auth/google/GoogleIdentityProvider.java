@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,40 +17,39 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+package org.sonarqube.auth.google;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Response;
-import com.github.scribejava.core.model.Token;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.model.Verifier;
+import com.github.scribejava.core.model.*;
 import com.github.scribejava.core.oauth.OAuthService;
-import javax.annotation.CheckForNull;
-import javax.servlet.http.HttpServletRequest;
 import org.sonar.api.server.ServerSide;
 import org.sonar.api.server.authentication.Display;
 import org.sonar.api.server.authentication.OAuth2IdentityProvider;
 import org.sonar.api.server.authentication.UserIdentity;
+import org.sonar.api.utils.MessageException;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
 
 import static java.lang.String.format;
 
 @ServerSide
-public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
+public class GoogleIdentityProvider implements OAuth2IdentityProvider {
 
-  private static final Logger LOGGER = Loggers.get(BitbucketIdentityProvider.class);
+  private static final Logger LOGGER = Loggers.get(GoogleIdentityProvider.class);
 
-  public static final String REQUIRED_SCOPE = "account";
-  public static final String KEY = "bitbucket";
+  public static final String REQUIRED_SCOPE = "openid email";
+  public static final String KEY = "google";
   private static final Token EMPTY_TOKEN = null;
 
-  private final BitbucketSettings settings;
+  private final GoogleSettings settings;
   private final UserIdentityFactory userIdentityFactory;
-  private final BitbucketScribeApi scribeApi;
+  private final GoogleScribeApi scribeApi;
 
-  public BitbucketIdentityProvider(BitbucketSettings settings, UserIdentityFactory userIdentityFactory, BitbucketScribeApi scribeApi) {
+  public GoogleIdentityProvider(GoogleSettings settings, UserIdentityFactory userIdentityFactory, GoogleScribeApi scribeApi) {
     this.settings = settings;
     this.userIdentityFactory = userIdentityFactory;
     this.scribeApi = scribeApi;
@@ -63,15 +62,15 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
 
   @Override
   public String getName() {
-    return "Bitbucket";
+    return "Google";
   }
 
   @Override
   public Display getDisplay() {
     return Display.builder()
-      // URL of src/main/resources/static/bitbucket.svg at runtime
-      .setIconPath("/static/authbitbucket/bitbucket.svg")
-      .setBackgroundColor("#205081")
+      // URL of src/main/resources/static/google.svg at runtime
+      .setIconPath("/static/authgoogle/google.svg")
+      .setBackgroundColor("#236487")
       .build();
   }
 
@@ -102,19 +101,28 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     Token accessToken = scribe.getAccessToken(EMPTY_TOKEN, new Verifier(oAuthVerifier));
 
     GsonUser gsonUser = requestUser(scribe, accessToken);
-    GsonEmails gsonEmails = requestEmails(scribe, accessToken);
-    UserIdentity userIdentity = userIdentityFactory.create(gsonUser, gsonEmails);
-    context.authenticate(userIdentity);
-    context.redirectToRequestedPage();
+    String redirectTo;
+    if (settings.oauthDomain()!=null && gsonUser.getEmail().endsWith("@"+settings.oauthDomain())) {
+      UserIdentity userIdentity = userIdentityFactory.create(gsonUser);
+      context.authenticate(userIdentity);
+      redirectTo = settings.getSonarBaseURL();
+    } else {
+      redirectTo = settings.getSonarBaseURL()+"/sessions/unauthorized#";
+    }
+    try {
+      context.getResponse().sendRedirect(redirectTo);
+    } catch (IOException ioe) {
+      throw MessageException.of("Unable to redirect after OAuth login", ioe);
+    }
   }
 
   private GsonUser requestUser(OAuthService scribe, Token accessToken) {
-    OAuthRequest userRequest = new OAuthRequest(Verb.GET, settings.apiURL() + "2.0/user", scribe);
+    OAuthRequest userRequest = new OAuthRequest(Verb.GET, settings.apiURL() + "oauth2/v1/userinfo", scribe);
     scribe.signRequest(accessToken, userRequest);
     Response userResponse = userRequest.send();
 
     if (!userResponse.isSuccessful()) {
-      throw new IllegalStateException(format("Can not get Bitbucket user profile. HTTP code: %s, response: %s",
+      throw new IllegalStateException(format("Can not get Google user profile. HTTP code: %s, response: %s",
         userResponse.getCode(), userResponse.getBody()));
     }
     String userResponseBody = userResponse.getBody();
@@ -122,20 +130,9 @@ public class BitbucketIdentityProvider implements OAuth2IdentityProvider {
     return GsonUser.parse(userResponseBody);
   }
 
-  @CheckForNull
-  private GsonEmails requestEmails(OAuthService scribe, Token accessToken) {
-    OAuthRequest userRequest = new OAuthRequest(Verb.GET, settings.apiURL() + "2.0/user/emails", scribe);
-    scribe.signRequest(accessToken, userRequest);
-    Response emailsResponse = userRequest.send();
-    if (emailsResponse.isSuccessful()) {
-      return GsonEmails.parse(emailsResponse.getBody());
-    }
-    return null;
-  }
-
   private ServiceBuilder newScribeBuilder(OAuth2IdentityProvider.OAuth2Context context) {
     if (!isEnabled()) {
-      throw new IllegalStateException("Bitbucket authentication is disabled");
+      throw new IllegalStateException("Google authentication is disabled");
     }
     return new ServiceBuilder()
       .provider(scribeApi)

@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.sonarqube.auth.bitbucket</groupId>
-  <artifactId>sonar-auth-bitbucket-plugin</artifactId>
+  <groupId>org.sonarqube.auth.google</groupId>
+  <artifactId>sonar-auth-google-plugin</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
-  <name>Bitbucket Authentication for SonarQube</name>
-  <description>Bitbucket Authentication for SonarQube</description>
+  <name>Google Authentication for SonarQube</name>
+  <description>Google Authentication for SonarQube</description>
   <inceptionYear>2016</inceptionYear>
   <organization>
     <name>SonarSource</name>
@@ -24,18 +24,20 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.language>java</sonar.language>
   </properties>
 
   <scm>
-    <connection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-bitbucket.git</connection>
-    <developerConnection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-bitbucket.git</developerConnection>
-    <url>https://github.com/SonarQubeCommunity/sonar-auth-bitbucket</url>
+    <connection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-google.git</connection>
+    <developerConnection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-google.git</developerConnection>
+    <url>https://github.com/SonarQubeCommunity/sonar-auth-google</url>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>GitHub Issues</system>
-    <url>https://github.com/SonarQubeCommunity/sonar-auth-bitbucket/issues</url>
+    <url>https://github.com/SonarQubeCommunity/sonar-auth-google/issues</url>
   </issueManagement>
 
   <developers>
@@ -43,6 +45,11 @@
       <id>julienlancelot</id>
       <name>Julien Lancelot</name>
       <organization>SonarSource</organization>
+    </developer>
+    <developer>
+      <id>InfoSec812</id>
+      <name>Deven Phillips</name>
+      <organization>Zanclus Consulting</organization>
     </developer>
   </developers>
 
@@ -122,7 +129,7 @@
         <version>1.15</version>
         <extensions>true</extensions>
         <configuration>
-          <pluginClass>org.sonarqube.auth.bitbucket.AuthBitbucketPlugin</pluginClass>
+          <pluginClass>org.sonarqube.auth.google.AuthGooglePlugin</pluginClass>
         </configuration>
       </plugin>
     </plugins>

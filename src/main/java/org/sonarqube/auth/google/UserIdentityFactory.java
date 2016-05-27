@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,45 +17,43 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+package org.sonarqube.auth.google;
 
-import javax.annotation.Nullable;
 import org.sonar.api.server.ServerSide;
 import org.sonar.api.server.authentication.UserIdentity;
 
 import static java.lang.String.format;
-import static org.sonarqube.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_UNIQUE;
+import static org.sonarqube.auth.google.GoogleSettings.LOGIN_STRATEGY_UNIQUE;
 
 /**
- * Converts Bitbucket JSON responses to {@link UserIdentity}
+ * Converts Google JSON responses to {@link UserIdentity}
  */
 @ServerSide
 public class UserIdentityFactory {
 
-  private final BitbucketSettings settings;
+  private final GoogleSettings settings;
 
-  public UserIdentityFactory(BitbucketSettings settings) {
+  public UserIdentityFactory(GoogleSettings settings) {
     this.settings = settings;
   }
 
-  public UserIdentity create(GsonUser gsonUser, @Nullable GsonEmails gsonEmails) {
+  public UserIdentity create(GsonUser gsonUser) {
     UserIdentity.Builder builder = builder(gsonUser);
-    if (gsonEmails != null) {
-      builder.setEmail(gsonEmails.extractPrimaryEmail());
-    }
     return builder.build();
   }
 
   private UserIdentity.Builder builder(GsonUser gsonUser) {
     return UserIdentity.builder()
       .setProviderLogin(gsonUser.getUsername())
+      .setEmail(gsonUser.getUsername())
+      .setName(gsonUser.getDisplayName())
       .setLogin(generateLogin(gsonUser))
       .setName(generateName(gsonUser));
   }
 
   private String generateLogin(GsonUser gsonUser) {
     switch (settings.loginStrategy()) {
-      case BitbucketSettings.LOGIN_STRATEGY_PROVIDER_LOGIN:
+      case GoogleSettings.LOGIN_STRATEGY_PROVIDER_LOGIN:
         return gsonUser.getUsername();
       case LOGIN_STRATEGY_UNIQUE:
         return generateUniqueLogin(gsonUser);
@@ -70,6 +68,6 @@ public class UserIdentityFactory {
   }
 
   private static String generateUniqueLogin(GsonUser gsonUser) {
-    return format("%s@%s", gsonUser.getUsername(), BitbucketIdentityProvider.KEY);
+    return gsonUser.getUsername();
   }
 }

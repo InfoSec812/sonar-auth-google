@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,41 +17,43 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+package org.sonarqube.auth.google;
 
-import java.util.Arrays;
-import java.util.List;
-import javax.annotation.CheckForNull;
 import org.sonar.api.PropertyType;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.config.Settings;
 import org.sonar.api.server.ServerSide;
 
+import javax.annotation.CheckForNull;
+import java.util.Arrays;
+import java.util.List;
+
 import static java.lang.String.format;
 import static org.sonar.api.PropertyType.SINGLE_SELECT_LIST;
 
 @ServerSide
-public class BitbucketSettings {
+public class GoogleSettings {
 
-  public static final String CONSUMER_KEY = "sonar.auth.bitbucket.clientId.secured";
-  public static final String CONSUMER_SECRET = "sonar.auth.bitbucket.clientSecret.secured";
-  public static final String ENABLED = "sonar.auth.bitbucket.enabled";
-  public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.bitbucket.allowUsersToSignUp";
+  public static final String CONSUMER_KEY = "sonar.auth.google.clientId.secured";
+  public static final String CONSUMER_SECRET = "sonar.auth.google.clientSecret.secured";
+  public static final String ENABLED = "sonar.auth.google.enabled";
+  public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.google.allowUsersToSignUp";
+  public static final String LIMIT_DOMAIN = "sonar.auth.google.limitOauthDomain";
   // URLs are not configurable yet
-  public static final String API_URL = "sonar.auth.bitbucket.apiUrl";
-  public static final String DEFAULT_API_URL = "https://api.bitbucket.org/";
-  public static final String WEB_URL = "sonar.auth.bitbucket.webUrl";
-  public static final String DEFAULT_WEB_URL = "https://bitbucket.org/";
-  public static final String LOGIN_STRATEGY = "sonar.auth.bitbucket.loginStrategy";
+  public static final String API_URL = "sonar.auth.google.apiUrl";
+  public static final String DEFAULT_API_URL = "https://www.googleapis.com/";
+  public static final String WEB_URL = "sonar.auth.google.webUrl";
+  public static final String DEFAULT_WEB_URL = "https://accounts.google.com/";
+  public static final String LOGIN_STRATEGY = "sonar.auth.google.loginStrategy";
   public static final String LOGIN_STRATEGY_UNIQUE = "Unique";
-  public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Bitbucket login";
+  public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Google login";
   public static final String LOGIN_STRATEGY_DEFAULT_VALUE = LOGIN_STRATEGY_UNIQUE;
   public static final String CATEGORY = "security";
-  public static final String SUBCATEGORY = "bitbucket";
+  public static final String SUBCATEGORY = "google";
 
   private final Settings settings;
 
-  public BitbucketSettings(Settings settings) {
+  public GoogleSettings(Settings settings) {
     this.settings = settings;
   }
 
@@ -77,6 +79,10 @@ public class BitbucketSettings {
     return settings.getString(LOGIN_STRATEGY);
   }
 
+  public String getSonarBaseURL() {
+    return settings.getString("sonar.core.serverBaseURL");
+  }
+
   public String webURL() {
     String url = settings.getString(WEB_URL);
     if (url == null) {
@@ -93,6 +99,10 @@ public class BitbucketSettings {
     return urlWithEndingSlash(url);
   }
 
+  public String oauthDomain() {
+    return settings.getString(LIMIT_DOMAIN);
+  }
+
   private static String urlWithEndingSlash(String url) {
     if (!url.endsWith("/")) {
       return url + "/";
@@ -105,7 +115,7 @@ public class BitbucketSettings {
     return Arrays.asList(
       PropertyDefinition.builder(ENABLED)
         .name("Enabled")
-        .description("Enable Bitbucket users to login. Value is ignored if client ID and secret are not defined.")
+        .description("Enable Google users to login. Value is ignored if client ID and secret are not defined.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .type(PropertyType.BOOLEAN)
@@ -113,15 +123,15 @@ public class BitbucketSettings {
         .index(index++)
         .build(),
       PropertyDefinition.builder(CONSUMER_KEY)
-        .name("OAuth consumer Key")
-        .description("Consumer Key provided by Bitbucket when registering the consumer.")
+        .name("OAuth client ID")
+        .description("The Client ID provided by Google when registering the application.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .index(index++)
         .build(),
       PropertyDefinition.builder(CONSUMER_SECRET)
-        .name("OAuth consumer Secret")
-        .description("Consumer Secret provided by Bitbucket when registering the consumer.")
+        .name("OAuth Client Secret")
+        .description("Client Secret provided by Google when registering the application.")
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .index(index++)
@@ -133,18 +143,25 @@ public class BitbucketSettings {
         .subCategory(SUBCATEGORY)
         .type(PropertyType.BOOLEAN)
         .defaultValue(String.valueOf(true))
-        .index(4)
+        .index(index++)
         .build(),
       PropertyDefinition.builder(LOGIN_STRATEGY)
         .name("Login generation strategy")
         .description(format("When the login strategy is set to '%s', the user's login will be auto-generated the first time so that it is unique. " +
-          "When the login strategy is set to '%s', the user's login will be the Bitbucket login.",
-          LOGIN_STRATEGY_UNIQUE, LOGIN_STRATEGY_PROVIDER_LOGIN))
+                        "When the login strategy is set to '%s', the user's login will be the Google login.",
+                LOGIN_STRATEGY_UNIQUE, LOGIN_STRATEGY_PROVIDER_LOGIN))
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .type(SINGLE_SELECT_LIST)
         .defaultValue(LOGIN_STRATEGY_DEFAULT_VALUE)
         .options(LOGIN_STRATEGY_UNIQUE, LOGIN_STRATEGY_PROVIDER_LOGIN)
+        .index(index++)
+        .build(),
+      PropertyDefinition.builder(LIMIT_DOMAIN)
+        .name("Limit allowed authentication domain")
+        .description("When set, this will only allow users from the specified GApps domain to authenticate")
+        .category(CATEGORY)
+        .subCategory(SUBCATEGORY)
         .index(index++)
         .build()
       );

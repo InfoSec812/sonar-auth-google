@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,29 +17,29 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+package org.sonarqube.auth.google;
 
-import com.github.scribejava.core.builder.api.DefaultApi20;
+import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.extractors.AccessTokenExtractor;
 import com.github.scribejava.core.extractors.JsonTokenExtractor;
 import com.github.scribejava.core.model.OAuthConfig;
 import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.utils.OAuthEncoder;
 import org.sonar.api.server.ServerSide;
 
-import static com.github.scribejava.core.utils.OAuthEncoder.encode;
-
 @ServerSide
-public class BitbucketScribeApi extends DefaultApi20 {
+public class GoogleScribeApi extends GoogleApi20 {
 
-  private final BitbucketSettings settings;
+  public static final String GOOGLE_OAUTH_URL = "?response_type=code&client_id=%s&redirect_uri=%s&scope=%s";
+  private final GoogleSettings settings;
 
-  public BitbucketScribeApi(BitbucketSettings settings) {
+  public GoogleScribeApi(GoogleSettings settings) {
     this.settings = settings;
   }
 
   @Override
   public String getAccessTokenEndpoint() {
-    return settings.webURL() + "site/oauth2/access_token";
+    return settings.apiURL() + "oauth2/v3/token";
   }
 
   @Override
@@ -49,11 +49,17 @@ public class BitbucketScribeApi extends DefaultApi20 {
 
   @Override
   public String getAuthorizationUrl(OAuthConfig config) {
-    return new StringBuilder(settings.webURL())
-      .append("site/oauth2/authorize?response_type=code&client_id=").append(config.getApiKey())
-      .append("&redirect_uri=").append(encode(config.getCallback()))
-      .append("&scope=").append(encode(config.getScope()))
-      .toString();
+    StringBuilder sb = new StringBuilder(settings.webURL()).append("o/oauth2/auth")
+            .append(String.format(GOOGLE_OAUTH_URL, new Object[]{config.getApiKey(), OAuthEncoder.encode(config.getCallback()), OAuthEncoder.encode(config.getScope())}));
+    String state = config.getState();
+    if(state != null) {
+      sb.append('&').append("state").append('=').append(OAuthEncoder.encode(state));
+    }
+    if (settings.oauthDomain() != null) {
+      sb.append('&').append("hd=").append(settings.oauthDomain());
+    }
+
+    return sb.toString();
   }
 
   @Override

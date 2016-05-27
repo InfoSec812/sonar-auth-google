@@ -1,5 +1,5 @@
 /*
- * Bitbucket Authentication for SonarQube
+ * Google Authentication for SonarQube
  * Copyright (C) 2016-2016 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.bitbucket;
+package org.sonarqube.auth.google;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,36 +30,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.sonarqube.auth.bitbucket.BitbucketSettings.LOGIN_STRATEGY_DEFAULT_VALUE;
+import static org.sonarqube.auth.google.GoogleSettings.LOGIN_STRATEGY_DEFAULT_VALUE;
 
-public class BitbucketIdentityProviderTest {
+public class GoogleIdentityProviderTest {
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  Settings settings = new Settings(new PropertyDefinitions(BitbucketSettings.definitions()));
-  BitbucketSettings bitbucketSettings = new BitbucketSettings(settings);
+  Settings settings = new Settings(new PropertyDefinitions(GoogleSettings.definitions()));
+  GoogleSettings googleSettings = new GoogleSettings(settings);
   UserIdentityFactory userIdentityFactory = mock(UserIdentityFactory.class);
-  BitbucketScribeApi scribeApi = new BitbucketScribeApi(bitbucketSettings);
-  BitbucketIdentityProvider underTest = new BitbucketIdentityProvider(bitbucketSettings, userIdentityFactory, scribeApi);
+  GoogleScribeApi scribeApi = new GoogleScribeApi(googleSettings);
+  GoogleIdentityProvider underTest = new GoogleIdentityProvider(googleSettings, userIdentityFactory, scribeApi);
 
   @Test
   public void check_fields() {
-    assertThat(underTest.getKey()).isEqualTo("bitbucket");
-    assertThat(underTest.getName()).isEqualTo("Bitbucket");
-    assertThat(underTest.getDisplay().getIconPath()).isEqualTo("/static/authbitbucket/bitbucket.svg");
-    assertThat(underTest.getDisplay().getBackgroundColor()).isEqualTo("#205081");
+    assertThat(underTest.getKey()).isEqualTo("google");
+    assertThat(underTest.getName()).isEqualTo("Google");
+    assertThat(underTest.getDisplay().getIconPath()).isEqualTo("/static/authgoogle/google.svg");
+    assertThat(underTest.getDisplay().getBackgroundColor()).isEqualTo("#236487");
   }
 
   @Test
   public void is_enabled() {
-    settings.setProperty("sonar.auth.bitbucket.clientId.secured", "id");
-    settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", "secret");
-    settings.setProperty("sonar.auth.bitbucket.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
-    settings.setProperty("sonar.auth.bitbucket.enabled", true);
+    settings.setProperty("sonar.auth.google.clientId.secured", "id");
+    settings.setProperty("sonar.auth.google.clientSecret.secured", "secret");
+    settings.setProperty("sonar.auth.google.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
+    settings.setProperty("sonar.auth.google.enabled", true);
     assertThat(underTest.isEnabled()).isTrue();
 
-    settings.setProperty("sonar.auth.bitbucket.enabled", false);
+    settings.setProperty("sonar.auth.google.enabled", false);
     assertThat(underTest.isEnabled()).isFalse();
   }
 
@@ -72,7 +72,7 @@ public class BitbucketIdentityProviderTest {
 
     underTest.init(context);
 
-    verify(context).redirectTo("https://bitbucket.org/site/oauth2/authorize?response_type=code&client_id=id&redirect_uri=http%3A%2F%2Flocalhost%2Fcallback&scope=account");
+    verify(context).redirectTo("https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=id&redirect_uri=http%3A%2F%2Flocalhost%2Fcallback&scope=openid%20email");
   }
 
   @Test
@@ -81,18 +81,18 @@ public class BitbucketIdentityProviderTest {
     OAuth2IdentityProvider.InitContext context = mock(OAuth2IdentityProvider.InitContext.class);
 
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Bitbucket authentication is disabled");
+    thrown.expectMessage("Google authentication is disabled");
     underTest.init(context);
   }
 
   private void setSettings(boolean enabled) {
     if (enabled) {
-      settings.setProperty("sonar.auth.bitbucket.clientId.secured", "id");
-      settings.setProperty("sonar.auth.bitbucket.clientSecret.secured", "secret");
-      settings.setProperty("sonar.auth.bitbucket.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
-      settings.setProperty("sonar.auth.bitbucket.enabled", true);
+      settings.setProperty("sonar.auth.google.clientId.secured", "id");
+      settings.setProperty("sonar.auth.google.clientSecret.secured", "secret");
+      settings.setProperty("sonar.auth.google.loginStrategy", LOGIN_STRATEGY_DEFAULT_VALUE);
+      settings.setProperty("sonar.auth.google.enabled", true);
     } else {
-      settings.setProperty("sonar.auth.bitbucket.enabled", false);
+      settings.setProperty("sonar.auth.google.enabled", false);
     }
   }
 
