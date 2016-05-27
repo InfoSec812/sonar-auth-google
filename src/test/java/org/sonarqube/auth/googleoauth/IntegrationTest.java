@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
 
 public class IntegrationTest {
 
-  private static final String CALLBACK_URL = "http://localhost/oauth/callback/google";
+  private static final String CALLBACK_URL = "http://localhost/oauth/callback/googleoauth";
 
   @Rule
   public MockWebServer google = new MockWebServer();
@@ -65,12 +65,12 @@ public class IntegrationTest {
 
   @Before
   public void enable() {
-    settings.setProperty("sonar.auth.google.clientId.secured", "the_id");
-    settings.setProperty("sonar.auth.google.clientSecret.secured", "the_secret");
-    settings.setProperty("sonar.auth.google.enabled", true);
-    settings.setProperty("sonar.auth.google.limitOauthDomain", "google.com");
-    settings.setProperty("sonar.auth.google.apiUrl", format("http://%s:%d", google.getHostName(), google.getPort()));
-    settings.setProperty("sonar.auth.google.webUrl", format("http://%s:%d/o/oauth2/auth", google.getHostName(), google.getPort()));
+    settings.setProperty("sonar.auth.googleoauth.clientId.secured", "the_id");
+    settings.setProperty("sonar.auth.googleoauth.clientSecret.secured", "the_secret");
+    settings.setProperty("sonar.auth.googleoauth.enabled", true);
+    settings.setProperty("sonar.auth.googleoauth.limitOauthDomain", "googleoauth.com");
+    settings.setProperty("sonar.auth.googleoauth.apiUrl", format("http://%s:%d", google.getHostName(), google.getPort()));
+    settings.setProperty("sonar.auth.googleoauth.webUrl", format("http://%s:%d/o/oauth2/auth", google.getHostName(), google.getPort()));
   }
 
   /**
@@ -87,7 +87,7 @@ public class IntegrationTest {
   }
 
   /**
-   * Second phase: Google redirects browser to SonarQube at /oauth/callback/google?code={the verifier code}.
+   * Second phase: Google redirects browser to SonarQube at /oauth/callback/googleoauth?code={the verifier code}.
    * This SonarQube web service sends two requests to Google:
    * <ul>
    *   <li>get an access token</li>
@@ -100,7 +100,7 @@ public class IntegrationTest {
     // response of https://www.googleapis.com/oauth2/v3/token
     google.enqueue(new MockResponse().setBody("{\n" +
             "    \"id\": \"42\",\n" +
-            "    \"email\": \"john.smith@google.com\",\n" +
+            "    \"email\": \"john.smith@googleoauth.com\",\n" +
             "    \"verified_email\": true,\n" +
             "    \"name\": \"John Smith\",\n" +
             "    \"given_name\": \"John\",\n" +
@@ -114,9 +114,9 @@ public class IntegrationTest {
     underTest.callback(callbackContext);
 
     assertThat(callbackContext.csrfStateVerified.get()).isFalse();
-    assertThat(callbackContext.userIdentity.getLogin()).isEqualTo("john.smith@google.com");
+    assertThat(callbackContext.userIdentity.getLogin()).isEqualTo("john.smith@googleoauth.com");
     assertThat(callbackContext.userIdentity.getName()).isEqualTo("John Smith");
-    assertThat(callbackContext.userIdentity.getEmail()).isEqualTo("john.smith@google.com");
+    assertThat(callbackContext.userIdentity.getEmail()).isEqualTo("john.smith@googleoauth.com");
     assertThat(callbackContext.redirectSent.get()).isTrue();
 
     // Verify the requests sent to Google
@@ -127,7 +127,7 @@ public class IntegrationTest {
   }
 
   /**
-   * Second phase: Google redirects browser to SonarQube at /oauth/callback/google?code={the verifier code}.
+   * Second phase: Google redirects browser to SonarQube at /oauth/callback/googleoauth?code={the verifier code}.
    * This SonarQube web service sends two requests to Google:
    * <ul>
    *   <li>get an access token</li>
@@ -136,7 +136,7 @@ public class IntegrationTest {
    */
   @Test
   public void callback_on_successful_authentication_without_domain() throws IOException, InterruptedException {
-    settings.removeProperty("sonar.auth.google.limitOauthDomain");
+    settings.removeProperty("sonar.auth.googleoauth.limitOauthDomain");
     callback_on_successful_authentication();
   }
 

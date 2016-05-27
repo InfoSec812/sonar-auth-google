@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class UserIdentityFactoryTest {
   public void create_login_for_provider_strategy() {
     GsonUser gson = GsonUser.parse("{\n" +
             "    \"id\": \"42\",\n" +
-            "    \"email\": \"john.smith@google.com\",\n" +
+            "    \"email\": \"john.smith@googleoauth.com\",\n" +
             "    \"verified_email\": true,\n" +
             "    \"name\": \"John Smith\",\n" +
             "    \"given_name\": \"John\",\n" +
@@ -53,16 +53,16 @@ public class UserIdentityFactoryTest {
             "}");
     settings.setProperty(GoogleSettings.LOGIN_STRATEGY, GoogleSettings.LOGIN_STRATEGY_PROVIDER_LOGIN);
     UserIdentity identity = underTest.create(gson);
-    assertThat(identity.getLogin()).isEqualTo("john.smith@google.com");
+    assertThat(identity.getLogin()).isEqualTo("john.smith@googleoauth.com");
     assertThat(identity.getName()).isEqualTo("John Smith");
-    assertThat(identity.getEmail()).isEqualTo("john.smith@google.com");
+    assertThat(identity.getEmail()).isEqualTo("john.smith@googleoauth.com");
   }
 
   @Test
   public void create_login_for_unique_login_strategy() {
     GsonUser gson = GsonUser.parse("{\n" +
             "    \"id\": \"42\",\n" +
-            "    \"email\": \"john.smith@google.com\",\n" +
+            "    \"email\": \"john.smith@googleoauth.com\",\n" +
             "    \"verified_email\": true,\n" +
             "    \"name\": \"John Smith\",\n" +
             "    \"given_name\": \"John\",\n" +
@@ -73,9 +73,9 @@ public class UserIdentityFactoryTest {
     settings.setProperty(GoogleSettings.LOGIN_STRATEGY, GoogleSettings.LOGIN_STRATEGY_UNIQUE);
 
     UserIdentity identity = underTest.create(gson);
-    assertThat(identity.getLogin()).isEqualTo("john.smith@google.com");
+    assertThat(identity.getLogin()).isEqualTo("john.smith@googleoauth.com");
     assertThat(identity.getName()).isEqualTo("John Smith");
-    assertThat(identity.getEmail()).isEqualTo("john.smith@google.com");
+    assertThat(identity.getEmail()).isEqualTo("john.smith@googleoauth.com");
   }
 
   @Test

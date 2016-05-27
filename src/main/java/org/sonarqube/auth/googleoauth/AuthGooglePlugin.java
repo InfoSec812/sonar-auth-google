@@ -17,19 +17,22 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
-import org.junit.Test;
+import org.sonar.api.SonarPlugin;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AuthGooglePluginTest {
-
-  AuthGooglePlugin underTest = new AuthGooglePlugin();
-
-  @Test
-  public void test_extensions() {
-    assertThat(underTest.getExtensions()).hasSize(11);
+public class AuthGooglePlugin extends SonarPlugin {
+  @Override
+  public List getExtensions() {
+    List extensions = new ArrayList();
+    extensions.add(GoogleSettings.class);
+    extensions.add(UserIdentityFactory.class);
+    extensions.add(GoogleIdentityProvider.class);
+    extensions.add(GoogleScribeApi.class);
+    extensions.addAll(GoogleSettings.definitions());
+    return extensions;
   }
-
 }

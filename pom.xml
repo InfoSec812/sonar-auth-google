@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.sonarqube.auth.google</groupId>
-  <artifactId>sonar-auth-google-plugin</artifactId>
+  <artifactId>sonar-auth-googleoauth-plugin</artifactId>
   <version>1.2-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
   <name>Google Authentication for SonarQube</name>
@@ -130,7 +130,7 @@
         <version>1.15</version>
         <extensions>true</extensions>
         <configuration>
-          <pluginClass>org.sonarqube.auth.google.AuthGooglePlugin</pluginClass>
+          <pluginClass>org.sonarqube.auth.googleoauth.AuthGooglePlugin</pluginClass>
         </configuration>
       </plugin>
       <plugin>

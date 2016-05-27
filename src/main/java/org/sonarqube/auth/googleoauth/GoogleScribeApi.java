@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.extractors.AccessTokenExtractor;

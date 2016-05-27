@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class GsonUserTest {
   public void parse_from_json() {
     GsonUser underTest = GsonUser.parse("{\n" +
             "    \"id\": \"42\",\n" +
-            "    \"email\": \"john.smith@google.com\",\n" +
+            "    \"email\": \"john.smith@googleoauth.com\",\n" +
             "    \"verified_email\": true,\n" +
             "    \"name\": \"John Smith\",\n" +
             "    \"given_name\": \"John\",\n" +
@@ -46,7 +46,7 @@ public class GsonUserTest {
             "    \"locale\": \"en-US\"\n" +
             "}");
 
-    assertThat(underTest.getUsername()).isEqualTo("john.smith@google.com");
+    assertThat(underTest.getUsername()).isEqualTo("john.smith@googleoauth.com");
     assertThat(underTest.getDisplayName()).isEqualTo("John Smith");
   }
 

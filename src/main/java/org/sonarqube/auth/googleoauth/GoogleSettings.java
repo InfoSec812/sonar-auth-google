@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import org.sonar.api.PropertyType;
 import org.sonar.api.config.PropertyDefinition;
@@ -34,22 +34,22 @@ import static org.sonar.api.PropertyType.SINGLE_SELECT_LIST;
 @ServerSide
 public class GoogleSettings {
 
-  public static final String CONSUMER_KEY = "sonar.auth.google.clientId.secured";
-  public static final String CONSUMER_SECRET = "sonar.auth.google.clientSecret.secured";
-  public static final String ENABLED = "sonar.auth.google.enabled";
-  public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.google.allowUsersToSignUp";
-  public static final String LIMIT_DOMAIN = "sonar.auth.google.limitOauthDomain";
+  public static final String CONSUMER_KEY = "sonar.auth.googleoauth.clientId.secured";
+  public static final String CONSUMER_SECRET = "sonar.auth.googleoauth.clientSecret.secured";
+  public static final String ENABLED = "sonar.auth.googleoauth.enabled";
+  public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.googleoauth.allowUsersToSignUp";
+  public static final String LIMIT_DOMAIN = "sonar.auth.googleoauth.limitOauthDomain";
   // URLs are not configurable yet
-  public static final String API_URL = "sonar.auth.google.apiUrl";
+  public static final String API_URL = "sonar.auth.googleoauth.apiUrl";
   public static final String DEFAULT_API_URL = "https://www.googleapis.com/";
-  public static final String WEB_URL = "sonar.auth.google.webUrl";
-  public static final String DEFAULT_WEB_URL = "https://accounts.google.com/o/oauth2/auth";
-  public static final String LOGIN_STRATEGY = "sonar.auth.google.loginStrategy";
+  public static final String WEB_URL = "sonar.auth.googleoauth.webUrl";
+  public static final String DEFAULT_WEB_URL = "https://accounts.googleoauth.com/o/oauth2/auth";
+  public static final String LOGIN_STRATEGY = "sonar.auth.googleoauth.loginStrategy";
   public static final String LOGIN_STRATEGY_UNIQUE = "Unique";
   public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Google login";
   public static final String LOGIN_STRATEGY_DEFAULT_VALUE = LOGIN_STRATEGY_UNIQUE;
   public static final String CATEGORY = "security";
-  public static final String SUBCATEGORY = "google";
+  public static final String SUBCATEGORY = "googleoauth";
 
   private final Settings settings;
 

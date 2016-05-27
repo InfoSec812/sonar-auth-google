@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import com.github.scribejava.core.extractors.JsonTokenExtractor;
 import com.github.scribejava.core.model.OAuthConfig;
@@ -45,13 +45,13 @@ public class GoogleScribeApiTest {
   public void getAuthorizationUrl() {
     OAuthConfig oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-            "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
+            "https://accounts.googleoauth.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
       );
 
     oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
     oAuthConfig.setState("my-test-state");
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-            "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope&state=my-test-state"
+            "https://accounts.googleoauth.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope&state=my-test-state"
       );
   }
 

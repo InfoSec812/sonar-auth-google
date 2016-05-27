@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.*;
@@ -41,7 +41,7 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
   private static final Logger LOGGER = Loggers.get(GoogleIdentityProvider.class);
 
   public static final String REQUIRED_SCOPE = "openid email";
-  public static final String KEY = "google";
+  public static final String KEY = "googleoauth";
   private static final Token EMPTY_TOKEN = null;
 
   private final GoogleSettings settings;
@@ -67,8 +67,8 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
   @Override
   public Display getDisplay() {
     return Display.builder()
-      // URL of src/main/resources/static/google.svg at runtime
-      .setIconPath("/static/authgoogle/google.svg")
+      // URL of src/main/resources/static/googleoauth.svg at runtime
+      .setIconPath("/static/authgoogle/googleoauth.svg")
       .setBackgroundColor("#236487")
       .build();
   }

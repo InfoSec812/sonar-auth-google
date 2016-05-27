@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
 
 import org.sonar.api.server.ServerSide;
 import org.sonar.api.server.authentication.UserIdentity;
 
 import static java.lang.String.format;
-import static org.sonarqube.auth.google.GoogleSettings.LOGIN_STRATEGY_UNIQUE;
+import static org.sonarqube.auth.googleoauth.GoogleSettings.LOGIN_STRATEGY_UNIQUE;
 
 /**
  * Converts Google JSON responses to {@link UserIdentity}
