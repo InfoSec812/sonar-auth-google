@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+if ["$TRAVIS_PULL_REQUEST" != "false"]; then
+	echo "Setting Maven release values"
+	mvn versions:set -DnewVersion=$(git tag | tail -n 1)
+fi
+
 if [ "${TRAVIS_BRANCH}" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo '======= Build, and analyze master, deploy to GitHub Releases'
 
@@ -50,5 +55,7 @@ else
       -B -e -V
 fi
 
-echo "Generating release notes from git history"
-git show -s --pretty=format:"%h - %<|(35)%an%s" $(git rev-list --tags --max-count=1)...$(git show | grep "^commit" | awk '{print $2}') | tee target/RELEASE_NOTES
+if ["$TRAVIS_PULL_REQUEST" != "false"]; then
+	echo "Generating release notes from git history"
+	git show -s --pretty=format:"%h - %<|(35)%an%s" $(git rev-list --tags --max-count=1)...$(git show | grep "^commit" | awk '{print $2}') | tee target/RELEASE_NOTES
+fi
