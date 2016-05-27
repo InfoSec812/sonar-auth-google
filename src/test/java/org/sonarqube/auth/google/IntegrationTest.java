@@ -126,6 +126,20 @@ public class IntegrationTest {
     assertThat(userRequest.getPath()).startsWith("/oauth2/v1/userinfo");
   }
 
+  /**
+   * Second phase: Google redirects browser to SonarQube at /oauth/callback/google?code={the verifier code}.
+   * This SonarQube web service sends two requests to Google:
+   * <ul>
+   *   <li>get an access token</li>
+   *   <li>get the profile (login, name) of the authenticated user</li>
+   * </ul>
+   */
+  @Test
+  public void callback_on_successful_authentication_without_domain() throws IOException, InterruptedException {
+    settings.removeProperty("sonar.auth.google.limitOauthDomain");
+    callback_on_successful_authentication();
+  }
+
   @Test
   public void callback_throws_OAE_if_error_when_requesting_user_profile() throws IOException, InterruptedException {
     google.enqueue(newSuccessfulAccessTokenResponse());
@@ -140,6 +154,28 @@ public class IntegrationTest {
     assertThat(callbackContext.csrfStateVerified.get()).isTrue();
     assertThat(callbackContext.userIdentity).isNull();
     assertThat(callbackContext.redirectSent.get()).isFalse();
+  }
+
+  @Test
+  public void callback_redirects_to_unauthorized_if_domain_does_not_match() throws IOException, InterruptedException {
+    google.enqueue(newSuccessfulAccessTokenResponse());
+    // https://accounts.google.com/o/oauth2/token fails
+    google.enqueue(new MockResponse().setResponseCode(200).setBody("{\n"+
+            "    \"email\": \"john.smith@example.com\",\n" +
+            "    \"verified_email\": true,\n" +
+            "    \"name\": \"John Smith\",\n" +
+            "    \"given_name\": \"John\",\n" +
+            "    \"family_name\": \"Smith\",\n" +
+            "    \"picture\": \"https://lh3.googleusercontent.com/-AAAAAAAA/AAAAAAAAAAA/AAAAAAAAAAA/AAAAAAAAAA/photo.jpg\",\n" +
+            "    \"locale\": \"en-US\"\n" +
+            "}"));
+
+    HttpServletRequest request = newRequest("the-verifier-code");
+    DumbCallbackContext callbackContext = new DumbCallbackContext(request);
+    underTest.callback(callbackContext);
+
+    assertThat(callbackContext.csrfStateVerified.get()).isFalse();
+    assertThat(callbackContext.userIdentity).isNull();
   }
 
   /**
