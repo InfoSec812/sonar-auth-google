@@ -186,6 +186,22 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>1.9</version>
+        <configuration>
+          <licenseName>apache_v2</licenseName>
+        </configuration>
+        <executions>
+          <execution>
+            <id>download-licenses</id>
+            <goals>
+              <goal>download-licenses</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
