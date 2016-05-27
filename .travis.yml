@@ -23,6 +23,7 @@ deploy:
   provider: releases
   api_key: "9c3a2beeb5c59cb519ccfc7ca55e0b1c70731258"
   file: "${RELEASE_JAR}"
+  file: "target/RELEASE_NOTES"
   skip_cleanup: true
   on:
     tags: true
