@@ -21,4 +21,4 @@ deploy:
   file: target/RELEASE_NOTES
   file: "${RELEASE_JAR}"
   on:
-    repo: InfoSec812/sonar-auth-google
+    tags: true
