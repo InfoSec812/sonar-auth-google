@@ -51,4 +51,4 @@ else
 fi
 
 LAST_TAG=$(git rev-list --tags --max-count=1)
-git show -s --format=%ad ${LAST_TAG} > target/RELEASE_NOTES
+git show -s --format=%ad ${LAST_TAG} | tee target/RELEASE_NOTES
