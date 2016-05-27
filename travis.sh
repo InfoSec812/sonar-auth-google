@@ -3,7 +3,7 @@
 set -euo pipefail
 
 if [ "${TRAVIS_BRANCH}" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-  echo '======= Build, and analyze master, no deploy'
+  echo '======= Build, and analyze master, deploy to GitHub Releases'
 
   # Fetch all commit history so that SonarQube has exact blame information
   # for issue auto-assignment
@@ -50,3 +50,5 @@ else
       -B -e -V
 fi
 
+LAST_TAG=$(git rev-list --tags --max-count=1)
+git show -s --format=%ad ${LAST_TAG} > target/RELEASE_NOTES
