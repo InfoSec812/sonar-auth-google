@@ -105,12 +105,12 @@ public class GoogleSettingsTest {
 
   @Test
   public void default_webUrl() {
-    assertThat(underTest.webURL()).isEqualTo("https://accounts.google.com/");
+    assertThat(underTest.webURL()).isEqualTo("https://accounts.google.com/o/oauth2/auth");
   }
 
   @Test
   public void definitions() {
-    assertThat(GoogleSettings.definitions()).hasSize(6);
+    assertThat(GoogleSettings.definitions()).hasSize(7);
   }
 
 }
