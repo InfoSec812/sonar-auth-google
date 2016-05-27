@@ -49,7 +49,7 @@ public class GoogleScribeApi extends GoogleApi20 {
 
   @Override
   public String getAuthorizationUrl(OAuthConfig config) {
-    StringBuilder sb = new StringBuilder(settings.webURL()).append("o/oauth2/auth")
+    StringBuilder sb = new StringBuilder(settings.webURL())
             .append(String.format(GOOGLE_OAUTH_URL, new Object[]{config.getApiKey(), OAuthEncoder.encode(config.getCallback()), OAuthEncoder.encode(config.getScope())}));
     String state = config.getState();
     if(state != null) {

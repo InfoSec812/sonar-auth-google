@@ -70,7 +70,7 @@ public class IntegrationTest {
     settings.setProperty("sonar.auth.google.enabled", true);
     settings.setProperty("sonar.auth.google.limitOauthDomain", "google.com");
     settings.setProperty("sonar.auth.google.apiUrl", format("http://%s:%d", google.getHostName(), google.getPort()));
-    settings.setProperty("sonar.auth.google.webUrl", format("http://%s:%d", google.getHostName(), google.getPort()));
+    settings.setProperty("sonar.auth.google.webUrl", format("http://%s:%d/o/oauth2/auth", google.getHostName(), google.getPort()));
   }
 
   /**
