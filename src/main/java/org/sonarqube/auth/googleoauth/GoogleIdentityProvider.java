@@ -88,8 +88,8 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
   public Display getDisplay() {
     return Display.builder()
       // URL of src/main/resources/static/googleoauth.svg at runtime
-      .setIconPath("/static/authgoogle/googleoauth.svg")
-      .setBackgroundColor("#236487")
+      .setIconPath("/static/googleoauth/googleoauth.svg")
+      .setBackgroundColor("#4d90fe")
       .build();
   }
 

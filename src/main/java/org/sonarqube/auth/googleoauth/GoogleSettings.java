@@ -59,7 +59,6 @@ public class GoogleSettings {
   public static final String ENABLED = "sonar.auth.googleoauth.enabled";
   public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.googleoauth.allowUsersToSignUp";
   public static final String LIMIT_DOMAIN = "sonar.auth.googleoauth.limitOauthDomain";
-  // URLs are not configurable yet
   public static final String API_URL = "sonar.auth.googleoauth.apiUrl";
   public static final String DEFAULT_API_URL = "https://www.googleapis.com/";
   public static final String WEB_URL = "sonar.auth.googleoauth.webUrl";
