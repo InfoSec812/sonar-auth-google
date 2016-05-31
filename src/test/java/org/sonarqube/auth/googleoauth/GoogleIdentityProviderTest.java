@@ -67,8 +67,8 @@ public class GoogleIdentityProviderTest {
   public void check_fields() {
     assertThat(underTest.getKey()).isEqualTo("googleoauth");
     assertThat(underTest.getName()).isEqualTo("Google");
-    assertThat(underTest.getDisplay().getIconPath()).isEqualTo("/static/authgoogleoauth/googleoauth.svg");
-    assertThat(underTest.getDisplay().getBackgroundColor()).isEqualTo("#236487");
+    assertThat(underTest.getDisplay().getIconPath()).isEqualTo("/static/googleoauth/googleoauth.svg");
+    assertThat(underTest.getDisplay().getBackgroundColor()).isEqualTo("#4d90fe");
   }
 
   @Test
