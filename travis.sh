@@ -5,6 +5,7 @@ set -euo pipefail
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
 	echo "Setting Maven release values"
 	mvn versions:set -DnewVersion=$(git tag | tail -n 1)
+        mvn versions:commit
 fi
 
 if [ "${TRAVIS_BRANCH}" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
