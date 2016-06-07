@@ -11,7 +11,6 @@ cache:
 before_deploy:
 - export VERSION=$(cat pom.xml | grep -A 1 "sonar-auth-googleoauth-plugin" | grep
   version | sed 's@^[^>]*>\([^<]*\)<.*@\1@g')
-- git push --tags
 - export RELEASE_JAR=$(ls target/sonar-auth-googleoauth-plugin-${VERSION}.jar)
 - echo "Deploying ${RELEASE_JAR} to GitHub"
 deploy:
