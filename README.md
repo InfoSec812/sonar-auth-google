@@ -1,4 +1,6 @@
 # Google Authentication Plug-in for SonarQube #
+[![Build Status](https://api.travis-ci.org/InfoSec812/sonar-auth-google.svg)](https://travis-ci.org/InfoSec812/sonar-auth-google)
+
 
 ## Description ##
 This plugin enables user authentication and Single Sign-On via [Google](https://google.com/).

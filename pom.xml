@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.sonarqube.auth.google</groupId>
-  <artifactId>sonar-auth-google-plugin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <artifactId>sonar-auth-googleoauth-plugin</artifactId>
+  <version>1.2-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
   <name>Google Authentication for SonarQube</name>
   <description>Google Authentication for SonarQube</description>
@@ -30,9 +30,9 @@
   </properties>
 
   <scm>
-    <connection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-google.git</connection>
-    <developerConnection>scm:git:git@github.com:SonarQubeCommunity/sonar-auth-google.git</developerConnection>
-    <url>https://github.com/SonarQubeCommunity/sonar-auth-google</url>
+    <connection>scm:git:git@github.com:InfoSec812/sonar-auth-google.git</connection>
+    <developerConnection>scm:git:git@github.com:InfoSec812/sonar-auth-google.git</developerConnection>
+    <url>https://github.com/InfoSec812/sonar-auth-google</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -130,7 +130,7 @@
         <version>1.15</version>
         <extensions>true</extensions>
         <configuration>
-          <pluginClass>org.sonarqube.auth.google.AuthGooglePlugin</pluginClass>
+          <pluginClass>org.sonarqube.auth.googleoauth.AuthGooglePlugin</pluginClass>
         </configuration>
       </plugin>
       <plugin>
@@ -155,6 +155,52 @@
           </formats>
           <instrumentation></instrumentation>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>2.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-gitexe</artifactId>
+            <version>1.2</version>
+          </dependency>
+        </dependencies>
+        <version>1.0</version>
+        <configuration>
+          <tag>test</tag>
+          <connectionType>connection</connectionType>
+        </configuration>
+        <executions>
+          <execution>
+            <id>tag</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>tag</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>1.9</version>
+        <configuration>
+          <licenseName>apache_v2</licenseName>
+        </configuration>
+        <executions>
+          <execution>
+            <id>download-licenses</id>
+            <goals>
+              <goal>download-licenses</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

@@ -17,7 +17,27 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.auth.google;
+package org.sonarqube.auth.googleoauth;
+
+/*-
+ * #%L
+ * Google Authentication for SonarQube
+ * %%
+ * Copyright (C) 2016 SonarSource
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 import org.sonar.api.PropertyType;
 import org.sonar.api.config.PropertyDefinition;
@@ -34,22 +54,21 @@ import static org.sonar.api.PropertyType.SINGLE_SELECT_LIST;
 @ServerSide
 public class GoogleSettings {
 
-  public static final String CONSUMER_KEY = "sonar.auth.google.clientId.secured";
-  public static final String CONSUMER_SECRET = "sonar.auth.google.clientSecret.secured";
-  public static final String ENABLED = "sonar.auth.google.enabled";
-  public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.google.allowUsersToSignUp";
-  public static final String LIMIT_DOMAIN = "sonar.auth.google.limitOauthDomain";
-  // URLs are not configurable yet
-  public static final String API_URL = "sonar.auth.google.apiUrl";
+  public static final String CONSUMER_KEY = "sonar.auth.googleoauth.clientId.secured";
+  public static final String CONSUMER_SECRET = "sonar.auth.googleoauth.clientSecret.secured";
+  public static final String ENABLED = "sonar.auth.googleoauth.enabled";
+  public static final String ALLOW_USERS_TO_SIGN_UP = "sonar.auth.googleoauth.allowUsersToSignUp";
+  public static final String LIMIT_DOMAIN = "sonar.auth.googleoauth.limitOauthDomain";
+  public static final String API_URL = "sonar.auth.googleoauth.apiUrl";
   public static final String DEFAULT_API_URL = "https://www.googleapis.com/";
-  public static final String WEB_URL = "sonar.auth.google.webUrl";
-  public static final String DEFAULT_WEB_URL = "https://accounts.google.com/";
-  public static final String LOGIN_STRATEGY = "sonar.auth.google.loginStrategy";
+  public static final String WEB_URL = "sonar.auth.googleoauth.webUrl";
+  public static final String DEFAULT_WEB_URL = "https://accounts.googleoauth.com/o/oauth2/auth";
+  public static final String LOGIN_STRATEGY = "sonar.auth.googleoauth.loginStrategy";
   public static final String LOGIN_STRATEGY_UNIQUE = "Unique";
   public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Google login";
   public static final String LOGIN_STRATEGY_DEFAULT_VALUE = LOGIN_STRATEGY_UNIQUE;
   public static final String CATEGORY = "security";
-  public static final String SUBCATEGORY = "google";
+  public static final String SUBCATEGORY = "googleoauth";
 
   private final Settings settings;
 
@@ -88,7 +107,7 @@ public class GoogleSettings {
     if (url == null) {
       url = DEFAULT_WEB_URL;
     }
-    return urlWithEndingSlash(url);
+    return url;
   }
 
   public String apiURL() {
@@ -158,8 +177,16 @@ public class GoogleSettings {
         .index(index++)
         .build(),
       PropertyDefinition.builder(LIMIT_DOMAIN)
-        .name("Limit allowed authentication domain")
+        .name("Allowed Domain")
         .description("When set, this will only allow users from the specified GApps domain to authenticate")
+        .category(CATEGORY)
+        .subCategory(SUBCATEGORY)
+        .index(index++)
+        .build(),
+      PropertyDefinition.builder(WEB_URL)
+        .name("Google authentication URI")
+        .description("When set, this will override the URI used to send an authentication request to Google")
+        .defaultValue(DEFAULT_WEB_URL)
         .category(CATEGORY)
         .subCategory(SUBCATEGORY)
         .index(index++)
