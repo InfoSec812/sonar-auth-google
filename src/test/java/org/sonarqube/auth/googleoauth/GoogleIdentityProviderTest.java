@@ -80,7 +80,7 @@ public class GoogleIdentityProviderTest {
 
     underTest.init(context);
 
-    verify(context).redirectTo("https://accounts.googleoauth.com/o/oauth2/auth?response_type=code&client_id=id&redirect_uri=http%3A%2F%2Flocalhost%2Fcallback&scope=openid%20email");
+    verify(context).redirectTo("https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=id&redirect_uri=http%3A%2F%2Flocalhost%2Fcallback&scope=openid%20email");
   }
 
   @Test
