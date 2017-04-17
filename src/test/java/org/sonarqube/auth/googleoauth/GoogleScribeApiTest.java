@@ -65,13 +65,13 @@ public class GoogleScribeApiTest {
   public void getAuthorizationUrl() {
     OAuthConfig oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-            "https://accounts.googleoauth.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
+            "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope"
       );
 
     oAuthConfig = new OAuthConfig("key", null, "callback", null, "the-scope", null, null, null, null);
     oAuthConfig.setState("my-test-state");
     assertThat(underTest.getAuthorizationUrl(oAuthConfig)).isEqualTo(
-            "https://accounts.googleoauth.com/o/oauth2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope&state=my-test-state"
+            "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=key&redirect_uri=callback&scope=the-scope&state=my-test-state"
       );
   }
 

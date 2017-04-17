@@ -62,7 +62,7 @@ public class GoogleSettings {
   public static final String API_URL = "sonar.auth.googleoauth.apiUrl";
   public static final String DEFAULT_API_URL = "https://www.googleapis.com/";
   public static final String WEB_URL = "sonar.auth.googleoauth.webUrl";
-  public static final String DEFAULT_WEB_URL = "https://accounts.googleoauth.com/o/oauth2/auth";
+  public static final String DEFAULT_WEB_URL = "https://accounts.google.com/o/oauth2/v2/auth";
   public static final String LOGIN_STRATEGY = "sonar.auth.googleoauth.loginStrategy";
   public static final String LOGIN_STRATEGY_UNIQUE = "Unique";
   public static final String LOGIN_STRATEGY_PROVIDER_LOGIN = "Same as Google login";
