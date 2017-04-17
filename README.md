@@ -18,14 +18,14 @@ In the [Google Developers Console](https://console.developers.google.com/):
 4. Set the "Name" value to something which you will associated with SonarQube
 5. Set the "Authorized JavaScript origins" to the base URL of your SonarQube server web application (no path allowed)
 6. Set the "Authorized redirect URIs" to be:
-   * ${sonarBaseURL}/oauth2/callback
-   * ${sonarBaseURL}/oauth2/callback/google
+   * ${sonarBaseURL}/oauth2/callback/googleoauth
 
 In SonarQube settings :
 1. Go to "Security" -> "Google"
 2. Set the "Enabled" property to true
-3. Set the "OAuth client ID" from the value provided by the Google OAuth consumer
-4. Set the "OAuth consumer Secret" from the value provided by the Google OAuth consumer
+3. Set Google authentication URI: https://accounts.google.com/o/oauth2/v2/auth
+4. Set the "OAuth client ID" from the value provided by the Google OAuth consumer
+5. Set the "OAuth consumer Secret" from the value provided by the Google OAuth consumer
 
 Go to the login form, a new button "Log in with Google" allow users to connect to SonarQube with their Google accounts.
 
