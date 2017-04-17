@@ -19,15 +19,8 @@ fi
 git fetch --unshallow || true
 
 export MAVEN_OPTS="-Xmx1G -Xms128m"
-mvn cobertura:cobertura verify sonar:sonar \
+mvn cobertura:cobertura verify
     -Dmaven.test.redirectTestOutputToFile=false \
-    -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-    -Dsonar.analysis.mode=issues \
-    -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
-    -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
-    -Dsonar.github.oauth=$GITHUB_TOKEN \
-    -Dsonar.host.url=$SONAR_HOST_URL \
-    -Dsonar.login=$SONAR_TOKEN \
     -B -e -V
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$LATEST_TAG" == "$TRAVIS_BRANCH" ]; then
