@@ -19,7 +19,7 @@ fi
 git fetch --unshallow || true
 
 export MAVEN_OPTS="-Xmx1G -Xms128m"
-mvn cobertura:cobertura verify
+mvn cobertura:cobertura verify \
     -Dmaven.test.redirectTestOutputToFile=false \
     -B -e -V
 
