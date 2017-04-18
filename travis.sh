@@ -23,7 +23,7 @@ mvn cobertura:cobertura verify sonar:sonar \
     -Dmaven.test.redirectTestOutputToFile=false \
     -Dsonar.host.url=${SONAR_HOST_URL} \
     -Dsonar.organization=${SONAR_ORG_KEY} \
-    -Dsonar.login=${SONAR_TOKEN}
+    -Dsonar.login=${SONAR_TOKEN} \
     -B -e -V
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$LATEST_TAG" == "$TRAVIS_BRANCH" ]; then
