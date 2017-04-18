@@ -18,7 +18,7 @@ deploy:
   api_key:
     secure: kUR6hx5ILBC/ypt2GQrYfMxKagWKmbRzvhmIWoSTRFGFb9grfWNA/Z2AIF3EFiQFQ4qRJNFK2FWxKNS7T21fQjhKidCPk7vjZzZzv/ek4pIagnxSWwYRQZcHhM+4lU2363Mqm2bg9bkRZF2n12KlyxVwZGy222/FfPrNypHH2qEkSApd7rtAL2Nakl7EWFQLJKlTlu26uDL+4HZzR2fO6miXYCkRmwp8ZYE+CXWG+fQk9TbXNLq+FEJxtPqKld5+EoIhO4jVlu5k/iGq4l1HUx36CNGxanyMKejWVQ3/1oPofpgiDkMmyuC0RoeQueb3c6so0JXU0rAWu+YrNV+RmOjoRFgwpCivTaNzBAxut3JAN87MSlBQLU5of+0WUysLc4cqEOkzg8Q5fBByakWHUBb0Y7ilBzUgZCBYhp0F6uCpIOgWoPxgr50Om1XIR3GkmSnJD+Y6cLeyqmPfSgYY1XOC5fpdBP14TyQlXdu5jecvCkWB96A0T/MQBO7BPbHlu/md2eOB+3T3i61Bs1kn50vQSio/2Fy8LQYs7HXhKgC9GGWas8r5xvxQsmskeHtMBJ2wjgwsBwtGssuSlEa1hlWvCFxdVdJo/BV1Vk9FFDcFSxAE1HgCRvCoG4ZxLXVVOsmeHMzb8lLE3qo6V/prwjtWpnj7KFCmrk+KIQHZLA8=
   file:
-   - "target/${RELEASE_JAR}"
+   - "${RELEASE_JAR}"
    - "target/RELEASE_NOTES"
   on:
     repo: InfoSec812/sonar-auth-google
