@@ -6,6 +6,12 @@
 This plugin enables user authentication and Single Sign-On via [Google](https://google.com/).
 It is heavily based on the code by [Julien Lancelot](https://github.com/SonarQubeCommunity/sonar-auth-bitbucket)
 
+## Feedback Process ##
+* [Releases](releases/) are created with every SNAPSHOT, but only non-SNAPSHOT releases are added to the Update Center
+* Snapshot releases are up for public review as release candidates
+* When a SNAPSHOT is deemed of sufficient quality to release, an announcement will be sent to the SonarQube Google Group requesting feedback
+* After the feedback period, the SNAPSHOT release will be re-tagged as a release and uploaded to the Update Center
+
 ## Installation ##
 1. Install the plugin through the [Update Center](http://docs.sonarqube.org/display/SONAR/Update+Center) or download it into the *SONARQUBE_HOME/extensions/plugins* directory
 1. Restart the SonarQube server
