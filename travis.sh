@@ -2,15 +2,6 @@
 
 set -euo pipefail
 
-LATEST_TAG=$(git tag | tail -n 1)
-
-if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$LATEST_TAG" == "$TRAVIS_BRANCH" ]; then
-	echo "Setting Maven release values"
-	mvn versions:set -DnewVersion=${LATEST_TAG}
-        mvn versions:commit
-fi
-
-
 # Fetch all commit history so that SonarQube has exact blame information
 # for issue auto-assignment
 # This command can fail with "fatal: --unshallow on a complete repository does not make sense"
