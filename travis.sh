@@ -10,7 +10,7 @@ set -euo pipefail
 git fetch --unshallow || true
 
 export MAVEN_OPTS="-Xmx1G -Xms128m"
-mvn cobertura:cobertura verify sonar:sonar \
+mvn package cobertura:cobertura verify sonar:sonar \
     -Dmaven.test.redirectTestOutputToFile=false \
     -Dsonar.host.url=${SONAR_HOST_URL} \
     -Dsonar.organization=${SONAR_ORG_KEY} \
