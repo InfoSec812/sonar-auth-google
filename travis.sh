@@ -26,8 +26,6 @@ mvn cobertura:cobertura verify sonar:sonar \
     -Dsonar.login=${SONAR_TOKEN} \
     -B -e -V
 
-if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$LATEST_TAG" == "$TRAVIS_BRANCH" ]; then
-    echo "Generating release notes from git history"
-    mkdir -p target
-    git show -s --pretty=format:"%h - %<|(35)%an%s" $(git rev-list --tags --max-count=1)...$(git show | grep "^commit" | awk '{print $2}') | tee target/RELEASE_NOTES
-fi
+echo "Generating release notes from git history"
+mkdir -p target
+git show -s --pretty=format:"%h - %<|(35)%an%s" $(git rev-list --tags --max-count=1)...$(git show | grep "^commit" | awk '{print $2}') | tee target/RELEASE_NOTES
