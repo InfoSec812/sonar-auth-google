@@ -27,6 +27,11 @@
       </roles>
       <id>InfoSec812</id>
     </developer>
+    <developer>
+      <id>julienlancelot</id>
+      <name>Julien Lancelot</name>
+      <organization>SonarSource</organization>
+    </developer>
   </developers>
   <licenses>
     <license>
@@ -56,19 +61,6 @@
     <system>GitHub Issues</system>
     <url>https://github.com/InfoSec812/sonar-auth-google/issues</url>
   </issueManagement>
-
-  <developers>
-    <developer>
-      <id>julienlancelot</id>
-      <name>Julien Lancelot</name>
-      <organization>SonarSource</organization>
-    </developer>
-    <developer>
-      <id>InfoSec812</id>
-      <name>Deven Phillips</name>
-      <organization>Zanclus Consulting</organization>
-    </developer>
-  </developers>
 
   <dependencies>
     <dependency>
