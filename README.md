@@ -27,8 +27,8 @@ In the [Google Developers Console](https://console.developers.google.com/):
 6. Set the "Authorized redirect URIs" to be:
    * ${sonarBaseURL}/oauth2/callback/googleoauth
 
-In SonarQube settings :
-1. Go to "Security" -> "Google"
+In the SonarQube administration page:
+1. Go to "Configuration" -> "General settings" -> "Security" -> "Google" ("Security" -> "Google" in SonarQube 6.6 and earlier versions)
 2. Set the "Enabled" property to true
 3. Set Google authentication URI: https://accounts.google.com/o/oauth2/v2/auth
 4. Set the "OAuth client ID" from the value provided by the Google OAuth consumer
