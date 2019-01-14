@@ -15,8 +15,7 @@ before_deploy:
 deploy:
   provider: releases
   skip_cleanup: true
-  api_key:
-    secure: "SsUHevjOy56hSLxnqG+RICNwKQuF+m6j6ptYFLzOzmya1v837OShV7dMoPsx58ppgNN5HgjmJYqxln+LfAYdKrflFjrwtgZ6gPEzuXvqw2rhBPLwAh+g068WXGM6nyEPRrZahYGBdScGnplMqp8KtlSs0hq7rnw0B8PjTz+amsjmLDKHXh7IJEFTB6Ssv/ndZ9/Kp+Jju/z2NM9iAfFsRUdORPUzPqFpMyXjtj44C40vvv9CJVv+RCuc2i3XkzY+ZOTgQgQeiHeldlePH2hloqPMNqm2v36EzzUmO1kp7z7+W22wkmeCgDzBkI7nFP8yFuQgUZS8I5vA2Tm6cQV2lVgdL0TdN/7XUy8EIxqrTFabM2oFCW+kdZLd1Tp2a5/gzdfQifZZRSIBaRSGLyw3MzMuHP/CtH/VZWo82A3GUc4lKWcmeIZ5saHp9cwV6ejCYgsvAVuNOOP/5HVFlMh2XzGRk2OaOIx+wbY11Gdhs7BPY8M1ch3NCZJqpmVKP1Qbf6nesjyR6ddCa3TdwR+gSXY8ZZ5ydYSiAvqGa5bdIlEb/8H0GJVNTS0q+wH573fSjWcAGhes0cArcQ06NKIPeGflRA1twkwyiWULJP2WY1mF255wy2SmJDl0lTG+l4BR7DlqQbhAI+ftHzOMrPylon8aJpPmIIvgdQywi+qwGB0="
+  api_key: "${GITHUB_TOKEN}"
   file:
    - "${RELEASE_JAR}"
    - "target/RELEASE_NOTES"
