@@ -69,6 +69,7 @@ public class GoogleSettings {
   public static final String LOGIN_STRATEGY_DEFAULT_VALUE = LOGIN_STRATEGY_UNIQUE;
   public static final String CATEGORY = "security";
   public static final String SUBCATEGORY = "googleoauth";
+  public static final String SONAR_CONTEXT = "sonar.web.context";
 
   private final Settings settings;
 
@@ -108,6 +109,10 @@ public class GoogleSettings {
       url = DEFAULT_WEB_URL;
     }
     return url;
+  }
+  
+  public String getWebContext() {
+	  return settings.getString(SONAR_CONTEXT) == null ? "" : settings.getString(SONAR_CONTEXT);
   }
 
   public String apiURL() {
