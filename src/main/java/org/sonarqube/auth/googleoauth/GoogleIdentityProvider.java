@@ -53,6 +53,9 @@ import org.sonar.api.utils.log.Loggers;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import java.net.URL;
+import java.net.URLDecoder;
+
 import static java.lang.String.format;
 
 @ServerSide
@@ -122,7 +125,25 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
     GsonUser gsonUser = requestUser(scribe, accessToken);
     String redirectTo;
     if (settings.oauthDomain()==null || (settings.oauthDomain()!=null && gsonUser.getEmail().endsWith("@"+settings.oauthDomain()))) {
-      redirectTo = settings.getSonarBaseURL();
+        redirectTo = settings.getSonarBaseURL();
+		String referer_url = request.getHeader("referer");
+        try {
+            URL urlObj = new URL(referer_url);
+            String returnToValue = null;
+            for( String param : urlObj.getQuery().split("&")) {
+                if( param.startsWith("return_to=")){
+                    System.out.println("Return_to param : " + param);
+                    System.out.println("Web context : " + settings.getWebContext());
+                    param = URLDecoder.decode(param,"UTF-8");
+                    returnToValue = param.split("=",2)[1].replace(settings.getWebContext(),"");
+                }
+            }
+            if(returnToValue != null){
+                redirectTo = redirectTo.concat(returnToValue);
+            }
+        } catch(Exception e) {
+            LOGGER.trace("Exception while parsing return to URL");
+        }
       UserIdentity userIdentity = userIdentityFactory.create(gsonUser);
       context.authenticate(userIdentity);
     } else {
