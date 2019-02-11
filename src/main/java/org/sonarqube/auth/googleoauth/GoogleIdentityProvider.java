@@ -53,6 +53,9 @@ import org.sonar.api.utils.log.Loggers;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import java.net.URL;
+import java.net.URLDecoder;
+
 import static java.lang.String.format;
 
 @ServerSide
@@ -123,7 +126,7 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
     String redirectTo;
     if (settings.oauthDomain()==null || (settings.oauthDomain()!=null && gsonUser.getEmail().endsWith("@"+settings.oauthDomain()))) {
         redirectTo = settings.getSonarBaseURL();
-        String referer_url = request.getHeader("referer");
+		String referer_url = request.getHeader("referer");
         try {
             URL urlObj = new URL(referer_url);
             String returnToValue = null;
