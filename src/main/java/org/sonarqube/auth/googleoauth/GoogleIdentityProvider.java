@@ -55,6 +55,8 @@ import java.io.IOException;
 
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -124,9 +126,9 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
 
     GsonUser gsonUser = requestUser(scribe, accessToken);
     String redirectTo;
-    if (settings.oauthDomain()==null || (settings.oauthDomain()!=null && gsonUser.getEmail().endsWith("@"+settings.oauthDomain()))) {
+    if (settings.oauthDomain()==null || (checkValidDomain(settings.oauthDomain(), gsonUser.getEmail()))) {
         redirectTo = settings.getSonarBaseURL();
-		String referer_url = request.getHeader("referer");
+        String referer_url = request.getHeader("referer");
         try {
             URL urlObj = new URL(referer_url);
             String returnToValue = null;
@@ -154,6 +156,10 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
     } catch (IOException ioe) {
       throw MessageException.of("Unable to redirect after OAuth login", ioe);
     }
+  }
+
+  private Boolean checkValidDomain(String oAuthDomains, String userEmail) {
+    return Arrays.stream(oAuthDomains.split(",")).anyMatch((domain) -> userEmail.endsWith("@" + domain));
   }
 
   private GsonUser requestUser(OAuthService scribe, Token accessToken) {
