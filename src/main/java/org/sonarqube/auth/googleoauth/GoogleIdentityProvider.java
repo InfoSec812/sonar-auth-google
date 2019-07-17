@@ -55,8 +55,6 @@ import java.io.IOException;
 
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Arrays;
-import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -159,7 +157,12 @@ public class GoogleIdentityProvider implements OAuth2IdentityProvider {
   }
 
   private Boolean checkValidDomain(String oAuthDomains, String userEmail) {
-    return Arrays.stream(oAuthDomains.split(",")).anyMatch((domain) -> userEmail.endsWith("@" + domain));
+    for (String domain : oAuthDomains.split(",")) {
+      if (userEmail.trim().endsWith("@" + domain.trim())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private GsonUser requestUser(OAuthService scribe, Token accessToken) {
