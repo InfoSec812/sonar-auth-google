@@ -75,7 +75,7 @@ public class GoogleScribeApi extends GoogleApi20 {
     if(state != null) {
       sb.append('&').append("state").append('=').append(OAuthEncoder.encode(state));
     }
-    if (settings.oauthDomain() != null) {
+    if (settings.oauthDomain() != null && !settings.oauthDomain().contains(",")) {
       sb.append('&').append("hd=").append(settings.oauthDomain());
     }
 

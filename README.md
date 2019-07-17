@@ -50,10 +50,4 @@ sonar.auth.googleoauth.clientId.secured    |Consumer Key provided by Google when
 sonar.auth.googleoauth.clientSecret.secured|Consumer password provided by Google when registering the consumer|None
 sonar.auth.googleoauth.enabled             |Enable Google users to login. Value is ignored if consumer Key and Secret are not defined|false
 sonar.auth.googleoauth.loginStrategy       |When the login strategy is set to 'Unique', the user's login will be auto-generated the first time so that it is unique. When the login strategy is set to 'Same as Google login', the user's login will be the Google login. This last strategy allows, when changing the authentication provider, to keep existing users (if logins from new provider are the same than Google)|Unique
-sonar.auth.googleoauth.limitOauthDomain    |When set with a GApps domain, only allow users from that domain to authenticate|None
-
-
-
-
-
-
+sonar.auth.googleoauth.limitOauthDomain    |When set with a GApps domain, only allow users from that domain to authenticate. Can be a list by separating domains with ","|None
