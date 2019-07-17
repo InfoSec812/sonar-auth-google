@@ -3,7 +3,7 @@
 
   <groupId>org.sonarqube.auth.google</groupId>
   <artifactId>sonar-auth-googleoauth-plugin</artifactId>
-  <version>1.6.3-SNAPSHOT</version>
+  <version>1.6.4-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
   <name>Google Authentication for SonarQube</name>
   <inceptionYear>2016</inceptionYear>
