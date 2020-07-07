@@ -1,3 +1,7 @@
+<h1>This Plugin Is No Longer Maintained</h1>
+
+After trying to keep this updated for some time, I have just not been able to with all of my other demands. If anyone would like to take this project over, you are welcome to. As an alternative, you can use [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) and [HTTP Header Authentication](https://docs.sonarqube.org/latest/instance-administration/delegated-auth/#header-2) to support **ANY** OAuth2/OIDC provider.
+
 # Google Authentication Plug-in for SonarQube #
 [![Build Status](https://api.travis-ci.org/InfoSec812/sonar-auth-google.svg)](https://travis-ci.org/InfoSec812/sonar-auth-google)[![Known Vulnerabilities](https://snyk.io/test/github/InfoSec812/sonar-auth-google/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/InfoSec812/sonar-auth-google?targetFile=pom.xml)
 
